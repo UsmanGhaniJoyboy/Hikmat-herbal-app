@@ -35,7 +35,7 @@ const Login = ({ setIsLoggedIn }) => {
           // Redirect to HakeemProfile page
           if(data.rol==="Patient")
           {
-            navigate("/Home",{routeName:'Patient'});
+            navigate("/Home", routeName="Home");
           }
           else{
             navigate("/HakeemProfile",{routeName:'Hakeem'});
