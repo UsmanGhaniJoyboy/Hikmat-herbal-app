@@ -1,0 +1,112 @@
+.form-container {
+    height: 60%;
+    width: 35%;
+    margin: auto;
+    margin-top: 3%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+    margin-top: 0px;
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: 5px;
+    margin-left: 0px;
+    color: #333;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .form-button {
+    width: 100%;
+    padding: 8px;
+    background-color: #12a8b3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .form-button:hover {
+    background-color: rgb(7, 85, 85);
+  }
+  
+  .title-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 2%;
+  }
+  
+  .title {
+    font-size: 2rem;
+    color: #333;
+    margin-top: 2px;
+    margin-left: 2px;
+  }
+  
+  .form-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+  
+  .signup-text {
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  
+  .signup {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3% 0%;
+  }
+  
+  .span-signup {
+    width: 50%;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  
+  .signup-btn {
+    width: 20%;
+    border: none;
+  }
+  .filter_profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    background-color: #e8e6e6;
+    border-radius: 10px;
+    padding: 0 15px; /* Add padding to prevent content from sticking to the sides */
+    width: 35%;
+    margin: auto;
+    margin-bottom: 20px;
+    margin-top: 2%;
+  }
+  
+  .filter_profile h2 {
+    font-size: 2rem;
+    color: #333;
+    margin: auto; /* Center horizontally */
+  }
+  

@@ -1,0 +1,65 @@
+.portfolio-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .main-content {
+    width: 70%;
+  }
+  
+  .heading {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .heading h2 {
+    font-size: 2.5rem;
+    color: #333;
+    text-transform: uppercase;
+  }
+  
+  .content {
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .content p {
+    margin-bottom: 20px;
+  }
+  
+  .sidebar {
+    width: 25%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .sidebar h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #333;
+    text-transform: uppercase;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar a {
+    text-decoration: none;
+    color: #555;
+    transition: color 0.3s ease;
+  }
+  
+  .sidebar a:hover {
+    color: #12a8b3;
+  }
+  

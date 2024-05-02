@@ -1,0 +1,37 @@
+.home_card{
+
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    color: black;
+    flex-wrap: wrap;
+    position: relative; /* Set position to relative */
+    font-size: 1.1rem;
+    transition: box-shadow 0.10s;
+    cursor: pointer;
+    margin-bottom: 1.7rem;
+    text-decoration: none;
+}
+.home_card:hover{
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+
+}
+.remRating{
+    font-weight: bold;
+}
+
+.remHeader{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+.home_card .card-link {
+    color: inherit; /* Use the default text color */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .home_card .card-link:hover {
+    text-decoration: none; /* Ensure no underline on hover */
+  }
+  

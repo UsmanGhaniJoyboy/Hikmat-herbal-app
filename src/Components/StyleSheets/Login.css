@@ -1,0 +1,106 @@
+
+.login-container {
+    /* width: 400px;
+    
+    height: 380px; */
+    height: 30%;
+    width: 35%;
+    margin: auto;
+    margin-top: 5%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .input-container {
+    margin-bottom: 15px;
+    margin-top: 0px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    margin-left: 0px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 5px;
+    background-color: #12a8b3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  button:hover {
+      background-color: rgb(7, 85, 85);
+  }
+  .title_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row; 
+    margin-top: 2%;
+  }
+  .title {
+    font-size: 2rem;
+    color: #333;
+    margin-top: 2px; /* Adjust spacing from logo */
+    margin-left: 2px;
+  }
+form{
+  margin-top: 0px;
+}
+
+
+.form-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.signup-text {
+  margin-right: 10px; /* Adjust spacing between text and button */
+  font-weight: bold;
+}
+.signup{
+  width: 100%;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3% 0%;
+}
+.span_signup{
+  width:50%;
+  /* border: 1px solid black; */
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.singup_btn{
+  max-width: 20%;
+  white-space: nowrap;
+  font-size: 1rem;
+  border: none;
+  font-weight: bold;
+  padding: 10px;
+
+}
+@media screen and (max-width: 768px) {
+  .singup_btn {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+}

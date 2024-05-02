@@ -1,0 +1,126 @@
+.main {
+    margin: 40px;
+}
+
+.card_container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.cards-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Make the cards container grow to fill available space */
+}
+
+.cards {
+    border: 1px solid black;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px;
+    background-image: linear-gradient(#3db39e, #4e8af7);
+    margin-left: 50px;
+}
+
+.side_profile {
+    border: 1px solid black;
+    width: 30%;
+    background-image: linear-gradient(#3db39e, #4e8af7);
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 400px; /* Fixed height for the side profile */
+    position: relative;
+    /* align-content: center; */
+    flex-wrap: wrap;
+}
+
+.img_profile {
+    /* overflow: hidden;
+    
+    border: 2px solid #fff;
+    height: 50%;
+    position: relative;
+    bottom: 16%; */
+    border: 2px solid white;
+    width: 60%;
+    border-radius: 50%;
+    overflow: hidden;
+    /* position: absolute; */
+    /* bottom: 52%; */
+}
+
+.profile_pic {
+    width: 100%;
+    height: auto;
+    /* bottom: 200px; */
+    /* border: 1px solid black; */
+}
+.hakeem_info{
+    /* border: 1px solid black; */
+    font-size: 1.5rem;
+    width: 70%;
+    /* height: 30%; */
+    /* margin-top: 50%; */
+    /* position: absolute;  */
+}
+
+
+.inside-cards {
+    margin: 0px 20px;
+}
+
+@media (max-width: 768px) {
+    .cards {
+        width: 100%; /* Adjust the width for smaller screens */
+    }
+}
+.heading_profile {
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: space-between;
+    height: 100px;
+    background-color: #e8e6e6;
+    border-radius: 10px;
+    margin: 15px 0;
+    padding: 0 20px; /* Add padding to prevent content from sticking to the sides */
+  }
+  .heading_profile h2 {
+    margin-left:  100px;
+    font-size: 2rem;
+    color: #333;
+    flex: 1; /* Let the h2 element grow to fill available space */
+    text-align: center; /* Center horizontally */
+  }
+
+  .logout_img {
+    width: 1.5rem;
+    margin-left: 5px; /* Add margin between the text and the image */
+  }
+.logout_link {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .logout_link {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+  }
+ .logout {
+  display: flex; /* Make the logout div a flex container */
+  align-items: center; /* Align items vertically */
+}

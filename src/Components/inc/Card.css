@@ -1,0 +1,47 @@
+.custome_card {
+    height: 30vh;
+    width: 400px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: bisque;
+    color: black;
+    flex-wrap: wrap;
+    position: relative; /* Set position to relative */
+  }
+  .card_1{
+    position: relative;
+  }
+  .card_btn {
+    position: absolute; /* Set position to absolute */
+    bottom: 10px; /* Adjust bottom spacing as needed */
+    width: 90%; /* Ensure links span the entire width of the card */
+    display: flex;
+    justify-content: center; /* Align links to the right */
+    /* border: 1px solid black; */
+  }
+  .card_rating{
+    position: absolute;
+    bottom: 30px;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+  }
+  .card_link {
+    color: #007bff; /* Change link color */
+    margin-right: 10px; /* Add spacing between links */
+    font-weight: bold; /* Make the text bold */
+    text-decoration: none;
+  }
+  
+  .card_link:hover {
+    text-decoration: underline; /* Add underline on hover */
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .custome_card {
+      width: 100%; /* Change width to 100% when screen width is 768px or less */
+    }
+  }
+  

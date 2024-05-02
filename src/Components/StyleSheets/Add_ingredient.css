@@ -1,0 +1,42 @@
+.add-Ing-container{
+    height: 30%;
+    width: 35%;
+    margin: auto;
+    margin-top: 2%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+}
+
+.AddIngredient_form-group{
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+}
+
+input[type='text'],
+  input[type='number'],
+  select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 1.3rem;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+
+
+  button {
+    width: 100%;
+    padding: 5px;
+    background-color: #12a8b3;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  button:hover {
+    background-color: rgb(7, 85, 85);
+  }
+  

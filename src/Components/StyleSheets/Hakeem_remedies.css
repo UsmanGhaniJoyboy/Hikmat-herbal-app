@@ -1,0 +1,20 @@
+.search-container-rem{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    border-radius: 5px;
+    background-color: #12a8b3;
+    padding-top: 20px;
+    box-sizing: border-box;
+    height: 60px;
+    padding-right: 10px;
+}
+
+.rem_container{
+    /* border: 1px solid black; */
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+}
+
