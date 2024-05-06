@@ -4,7 +4,7 @@ import logo_again from "../images/logo again.png";
 import Button from "react-bootstrap/Button";
 import "../StyleSheets/Login.css";
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = ({handleUserRole}) => {
   const navigate = useNavigate();
   const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,25 +20,26 @@ const Login = ({ setIsLoggedIn }) => {
     fetch(
       `http://localhost/Hakeemhikmat/api/Users/Login?email=${Email}&password=${password}`
     )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Invalid username or password");
-        }
-        return response.json();
-      })
+      .then((response) => {if (!response.ok) {throw new Error("Invalid username or password");}return response.json();})
       .then((data) => {
         // Check if the login was successful
         if (data.email === Email && data.password === password) {
-          // Alert the user and set isLoggedIn state
-          setIsLoggedIn(true);
+          // Alert the user and set isLoggedIn statesssss
+          // setIsLoggedIn(true);
+
+          // const handleScreen = data.rol;
           alert("Successfully logged in");
           // Redirect to HakeemProfile page
           if(data.rol==="Patient")
           {
-            navigate("/Home", routeName="Home");
+            // navigate("/Home");
+            handleUserRole(data.rol);
+            navigate("/SettingUpPatient" );
+            
           }
           else{
-            navigate("/HakeemProfile",{routeName:'Hakeem'});
+            navigate("/HakeemProfile");
+
           }
           console.log(data)
         } else {

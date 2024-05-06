@@ -1,7 +1,7 @@
 // In App.js
 
-import React, { useState,  } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import React, { useState,useEffect  } from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Home from "./Components/pages/Home";
 import Remedies from "./Components/pages/Remedies";
 import About from "./Components/pages/About";
@@ -19,32 +19,58 @@ import Hakeem_Remedies from "./Components/pages/Hakeem_Remedies";
 import Add_product from "./Components/pages/Add_product";
 import Remedy_Disciption from "./Components/pages/Remedy_Disciption";
 import Comment_Reply from "./Components/pages/Comment_Reply";
+import SettingUpPatient from "./Components/pages/SettingUpPatient";
+import { useLocation } from "react-router-dom";
 
 function App() {
-  
+  // const logout = useLocation();
+  // const navigate = useNavigate();
+  const [isPatient, setIsPatient] = useState('');
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  // Function to handle logout
-  const handleLogout = () => {
-    setIsLoggedIn(false); // Clear isLoggedIn status from localStorage
+  const handleUserRole = (role) => {
+      setIsPatient(role);
+    console.log(role);
   };
 
-  return (
-    <>
-      <Routes>
-        <Route
-          path="/"
-          element={isLoggedIn ? <Navigate to="/HakeemProfile" /> : <Login setIsLoggedIn={setIsLoggedIn} />}
-        />
-        <Route path="/HakeemProfile" 
-        element={<HakeemProfile handleLogout={handleLogout} />} />
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedOut, setIsLoggedOut] = useState(false); 
+  // Function to handle logout
+  // useEffect(() => {
+  //   // Check local storage or wherever you store login state
+  //   const userLoggedIn = localStorage.getItem("isLoggedIn");
+  //   setIsLoggedIn(userLoggedIn === "true");
+  // }, []);
+  
+  
+  // const handleLogout = () => {
+  //   // Clear user login status
+  //   localStorage.setItem("isLoggedIn", "false");
+  //   setIsLoggedIn(false);
 
-        {/* Protected Routes */}
-        {isLoggedIn && (
+  // };
+
+
+  
+
+  return (
+      <Routes>
+        {/* <Route
+          path="/"
+          element={isLoggedIn ? <Navigate to="/" /> : <Login setIsLoggedIn={setIsLoggedIn} />}
+        /> */}
+        {/* <Route path="/" 
+        element={<Login handleLogout={handleLogout} />} /> */}
+       
+        
           <>
-            <Route path="/Home" element={<Home />} />
-            <Route path="/Remedies" element={<Remedies />} />
+            
+            <Route path="/" element={<Login handleUserRole={handleUserRole} />} />
+            <Route path="/Home" element={<Home isPatient={isPatient}/>} />
+            <Route path="/SettingUpPatient" element={<SettingUpPatient />} />
+            <Route path="/HakeemProfile" element={<HakeemProfile />} />
+            
+            
+            <Route path="/Remedies" element={<Remedies/>} />
             <Route path="/About" element={<About />} />
             <Route path="/Cart" element={<Cart />} />
             <Route path="/HakeemProfile/Add_Remedies" element={<Add_Remedies />} />
@@ -59,9 +85,7 @@ function App() {
             <Route path="/Home/Remedy_Disciption" element={<Remedy_Disciption />} />
             <Route path="/Home/Remedy_Disciption/Comment_Reply" element={<Comment_Reply />} />
           </>
-        )}
-      </Routes>
-    </>
+    </Routes>
   );
 }
 

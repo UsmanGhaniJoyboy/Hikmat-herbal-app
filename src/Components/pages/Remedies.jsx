@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CustomeNav from "../inc/CustomeNav";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -16,17 +16,34 @@ import { useNavigate } from "react-router-dom";
 import acidity from "../images/acitiy.png";
 import filter from "../images/filter.png";
 import Home_remedyCard from "../inc/Home_remedyCard";
-
+import Nav2_forPatient from "../inc/Nav2_forPatient";
+import { useLocation } from "react-router-dom";
 
 function Remedies() {
+  // const location = useLocation();
+  // Extract response from location state
+  // const response = location.state?.response || null;
   const navigate = useNavigate();
+  
+    // const { response_Patient } = location.state || {};
+   
+  // const [checkP,setCheckP] =useState(false);
 
-  const gotoRemediesDetail=()=>{
-    navigate("/Remedies/RemediesDetails")
-  }
+  // useEffect(() => {
+  //   // Check if the default response is 'patient'
+  //   if (response === 'Patient') {
+  //     setCheckP(true);
+
+  //   }
+  // }, [response]);
+
+  const gotoRemediesDetail = () => {
+    navigate("/Remedies/RemediesDetails");
+  };
   return (
     <>
       <CustomeNav />
+
       <Container>
         <Row className="justify-content-md-center">
           <Col md={8}>
@@ -45,12 +62,16 @@ function Remedies() {
       <Container fluid="md">
         <Row className="justify-content-md-center">
           <Col md={8}>
-            <Link style={{textDecoration:"none"}} to="/Home/Remedy_Disciption" title="Hair fall Remedy">
-            <Home_remedyCard
-              remHeader="Hair fall Remedy"
-              cardText="For hair treatements / for make your hair long and strong"
-              remRating="Rating * * * * *"
-            />
+            <Link
+              style={{ textDecoration: "none" }}
+              to="/Home/Remedy_Disciption"
+              title="Hair fall Remedy"
+            >
+              <Home_remedyCard
+                remHeader="Hair fall Remedy"
+                cardText="For hair treatements / for make your hair long and strong"
+                remRating="Rating * * * * *"
+              />
             </Link>
             {/* <Link className="border_shadow">
           <Card className="border_shadow" >
@@ -67,7 +88,7 @@ function Remedies() {
           </Link> */}
           </Col>
           <Col md={8}>
-          <Home_remedyCard
+            <Home_remedyCard
               remHeader="Stomach Acidity Remedy"
               cardText="Take control of acidity with our trusted remedy"
               remRating="Rating * * * * "
@@ -88,7 +109,7 @@ function Remedies() {
           </Link> */}
           </Col>
           <Col md={8}>
-          <Home_remedyCard
+            <Home_remedyCard
               remHeader="Heart Disease Remedy"
               cardText="Good For blood pressure / heart related diseases"
               remRating="Rating * * * "
@@ -108,7 +129,7 @@ function Remedies() {
           </Link> */}
           </Col>
           <Col md={8}>
-          <Home_remedyCard
+            <Home_remedyCard
               remHeader="Remedy for Body weakness"
               cardText="Having weakness in body , feeling Fatigue"
               remRating="Rating * * "
@@ -129,7 +150,6 @@ function Remedies() {
           </Col>
         </Row>
       </Container>
-
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Import Link
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -12,8 +12,16 @@ import shoping from "../images/shopping.png";
 import sales from "../images/sales again.png";
 import "../StyleSheets/Hikmat.css";
 
-function HakeemProfile() {
+function HakeemProfile({isPatient}) {
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    console.log(isPatient)
+  })
+
+
+  
+
   const handleAddRemediesClick = () => {
     navigate("/HakeemProfile/Add_Remedies");
   };
@@ -36,6 +44,7 @@ function HakeemProfile() {
   return (
     <>
       <CustomeNav />
+      
       <div className="main">
         <div className="heading_profile">
           <h2>Hakeem Profile</h2>
