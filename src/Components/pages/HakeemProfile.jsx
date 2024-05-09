@@ -12,11 +12,12 @@ import shoping from "../images/shopping.png";
 import sales from "../images/sales again.png";
 import "../StyleSheets/Hikmat.css";
 
-function HakeemProfile({isPatient}) {
+function HakeemProfile({sendName}) {
   const navigate = useNavigate();
+  const [hakeemName,setHakeemName] = useState('');
 
   useEffect(()=>{
-    console.log(isPatient)
+      setHakeemName(sendName);
   })
 
 
@@ -37,7 +38,6 @@ function HakeemProfile({isPatient}) {
   const buy = () => {
     navigate("/Home");
   };
-  const [hakeemName, setHakeemName] = useState("Suleman");
   // const [hakeemAge, setHakeemAge] = useState(30);
   // const [hakeemExp, setHakeemExp] = useState("3 years");
   
@@ -94,12 +94,12 @@ function HakeemProfile({isPatient}) {
                 />
                 <Card.Body>
                   <Button onClick={handleViewRemediesClick} className="card_title" variant="primary">
-                    View Remedies
+                    Your Remedies
                   </Button>
                 </Card.Body>
               </Card>
-                {/* Go to home page */}
-              <Card style={{ width: "13rem" }} className="inside-cards">
+               
+              {/* <Card style={{ width: "13rem" }} className="inside-cards">
                 <Card.Img
                   variant="top"
                   src={shoping}
@@ -112,7 +112,7 @@ function HakeemProfile({isPatient}) {
                   </Button>
                 </Card.Body>
               </Card>
-              {/* See sales card */}
+              
               <Card style={{ width: "13rem" }} className="inside-cards">
                 <Card.Img
                   variant="top"
@@ -125,7 +125,7 @@ function HakeemProfile({isPatient}) {
                     See Sales
                   </Button>
                 </Card.Body>
-              </Card>
+              </Card> */}
             </div>
           </ThemeProvider>
         </div>

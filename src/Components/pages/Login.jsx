@@ -3,14 +3,24 @@ import { useNavigate } from "react-router-dom";
 import logo_again from "../images/logo again.png";
 import Button from "react-bootstrap/Button";
 import "../StyleSheets/Login.css";
+import { Icon } from "react-icons-kit";
+import { eyeOff } from "react-icons-kit/feather/eyeOff";
+import { eye } from "react-icons-kit/feather/eye";
 
-const Login = ({handleUserRole}) => {
+const Login = ({ handleUserRole, sendName }) => {
   const navigate = useNavigate();
   const [Email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [type, setType] = useState("password");
+  const [icon, setIcon] = useState(eyeOff);
 
   const gotoSignup = () => {
     navigate("/Signup");
+  };
+
+  const handleToggle = () => {
+    setType(type === "password" ? "text" : "password");
+    setIcon(type === "password" ? eye : eyeOff);
   };
 
   const handleSubmit = (e) => {
@@ -20,7 +30,12 @@ const Login = ({handleUserRole}) => {
     fetch(
       `http://localhost/Hakeemhikmat/api/Users/Login?email=${Email}&password=${password}`
     )
-      .then((response) => {if (!response.ok) {throw new Error("Invalid username or password");}return response.json();})
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Invalid username or password");
+        }
+        return response.json();
+      })
       .then((data) => {
         // Check if the login was successful
         if (data.email === Email && data.password === password) {
@@ -30,18 +45,15 @@ const Login = ({handleUserRole}) => {
           // const handleScreen = data.rol;
           alert("Successfully logged in");
           // Redirect to HakeemProfile page
-          if(data.rol==="Patient")
-          {
+          if (data.rol === "Patient") {
             // navigate("/Home");
             handleUserRole(data.rol);
-            navigate("/SettingUpPatient" );
-            
-          }
-          else{
+            navigate("/SettingUpPatient");
+          } else {
+            sendName(data.name);
             navigate("/HakeemProfile");
-
           }
-          console.log(data)
+          console.log(data);
         } else {
           throw new Error("Invalid username or password");
         }
@@ -93,13 +105,19 @@ const Login = ({handleUserRole}) => {
           </div>
           <div className="input-container">
             <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-input">
+              <input
+                type={type}
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                autoComplete="current-password"
+              />
+              <span className="show-password" onClick={handleToggle}>
+                <Icon icon={icon} size={25} />
+              </span>
+            </div>
           </div>
           <Button onClick={handleSubmit} type="submit">
             Login

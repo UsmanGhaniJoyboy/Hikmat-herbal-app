@@ -26,11 +26,16 @@ function App() {
   // const logout = useLocation();
   // const navigate = useNavigate();
   const [isPatient, setIsPatient] = useState('');
+  const [name, setName ] = useState('');
 
   const handleUserRole = (role) => {
       setIsPatient(role);
     console.log(role);
   };
+
+  const sendName=(name)=>{
+    setName(name);
+  }
 
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const [isLoggedOut, setIsLoggedOut] = useState(false); 
@@ -64,10 +69,10 @@ function App() {
         
           <>
             
-            <Route path="/" element={<Login handleUserRole={handleUserRole} />} />
+            <Route path="/" element={<Login handleUserRole={handleUserRole} sendName={sendName} />} />
             <Route path="/Home" element={<Home isPatient={isPatient}/>} />
             <Route path="/SettingUpPatient" element={<SettingUpPatient />} />
-            <Route path="/HakeemProfile" element={<HakeemProfile />} />
+            <Route path="/HakeemProfile" element={<HakeemProfile sendName={name} />} />
             
             
             <Route path="/Remedies" element={<Remedies/>} />
