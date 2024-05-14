@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import CustomeNav from "../inc/CustomeNav";
+import axios from "axios";
+
 import Carousel from "react-bootstrap/Carousel";
 import slider1 from "../images/slider3.jpg";
 import slider2 from "../images/slider 4.jpg";
@@ -24,10 +26,10 @@ import Home_remedyCard from "../inc/Home_remedyCard";
 // import Nav2_forPatient from "../inc/Nav2_forPatient";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function Home({isPatient }) {
+function Home({isPatient,selectedDisease }) {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // const [checkPat, setCheckPat] = useState(true);
   
   // const { response_Patient } = location.state || {};
@@ -38,9 +40,26 @@ function Home({isPatient }) {
     //    console.log(isPatient);
 
     //  }
-    console.log(isPatient);
-
+    const ids = selectedDisease.map((item)=>item.value) 
+    console.log("All IDs: ",ids);
+    const idsString = ids.join(',');
+    console.log("Comma-separated IDs: ", idsString);
+    axios.get(`http://localhost/Hakeemhikmat/api/Addnushka/SearchNushka?diseaseId=${idsString}`)
+      .then((response) => {
+        // Check if the response contains data
+        if (response.data && response.data !== "NO DATA") {
+          console.log("Nuskhas Fetched:", response.data);
+        } else {
+          console.log("No Nuskhas found");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching Nuskhas:", error);
+      });
+    
   });
+
+  
 
   // const [checkPatient , setCheckPatient] = useState(false);
 
@@ -81,6 +100,9 @@ function Home({isPatient }) {
       >
         <Container>
           <Row className="justify-content-md-center">
+          {
+            selectedDisease.map(()=>{})
+          }
             <Col md={10}>
               <div className="search-container">
                 <img src={search} alt="search icon" className="search-icon" />
