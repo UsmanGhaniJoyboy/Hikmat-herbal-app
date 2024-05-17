@@ -39,7 +39,7 @@ function CustomeNav({ isPatient }) {
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="ms-auto">
+            <Nav className="ms-auto pad">
               <NavLink title="Remedies" to="/Remedies" className="nav-link">
                 Remedies
               </NavLink>

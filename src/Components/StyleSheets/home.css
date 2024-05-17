@@ -30,7 +30,7 @@
     box-sizing: border-box;
     background-color: #12a8b3;
     height: 60px;
-    margin-bottom: 50px;
+    margin-bottom: 1rem;
   }
   .toHakeem{
     background-color: #28fb95;
@@ -63,7 +63,7 @@
   Link{
     text-decoration: none;
   }
-  
+
 /*   
   .search-icon {
     width: 35px;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomeNav from "../inc/CustomeNav";
 import Custome_heading from "../inc/Custome_heading";
 import Row from "react-bootstrap/Row";
@@ -9,16 +9,56 @@ import search from "../images/nounsearch.png";
 import { FaStar } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
+import axios from "axios";
+
+
 
 const Remedy_Disciption = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { remedy } = location.state;
+  const [steps,setSteps] = useState([]);
+  const [Ingredient,setIngredient] = useState('');
+  const [usage,setUsage] = useState('');
+
+  useEffect(()=>{
+    console.log(remedy);
+    console.log('Nuskha id aginst selecting remedy', remedy.Nuskhaid);
+    const fetchSteps = async ()=>{
+      try{
+        const response = await axios.get(`http://localhost/Hakeemhikmat/api/Addnushka/GetSteps?Nuskaid=${remedy.Nuskhaid}`);
+        if(response.data && response.data !== "NO DATA"){
+          setSteps(response.data);
+          console.log(`steps are fetching ${steps}`);
+        }
+      }
+      catch (error) {
+        console.error("Error fetching Nuskhas:", {steps});
+        if (error.response) {
+          // Server responded with a status other than 2xx
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+          // Request was made but no response was received
+          console.error("Request data:", error.request);
+        } else {
+          // Something happened in setting up the request
+          console.error("Error message:", error.message);
+        }
+      }
+      
+    }
+    fetchSteps();
+  },[])
+
   const [rating, setRating] = useState(null);
   return (
     <div>
       <CustomeNav />
-      <Custome_heading title="Remedy Discription" />
+      <Custome_heading title={remedy.NuskhaName} />
       <div className="rem-container">
-        <h3 className="text-center fw-bold">Hair Fall Remedy</h3>
         <Container fluid="md" className="inner-cont">
           <Row className="justify-content-md-center ing-steps ">
             <Col md={8}>

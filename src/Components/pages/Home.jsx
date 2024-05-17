@@ -16,50 +16,58 @@ import Container from "react-bootstrap/Container";
 import search from "../images/nounsearch.png";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-// import shampoo from "../images/HerbalShampoo.jpg";
-// import qabz from "../images/qabz.jpg";
-// import kidney from "../images/kidney stone.jpg";
-// import safi from "../images/safi.jpg";
+import { FaStar } from "react-icons/fa";
 import filter from "../images/filter.png";
 // import Footer from "../inc/Footer";
 import Home_remedyCard from "../inc/Home_remedyCard";
 // import Nav2_forPatient from "../inc/Nav2_forPatient";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function Home({isPatient,selectedDisease }) {
+function Home({ isPatient, selectedDisease }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [remediesAgainstDisease, setremediesAgainstDisease] = useState([]);
 
   // const [checkPat, setCheckPat] = useState(true);
-  
+
   // const { response_Patient } = location.state || {};
   useEffect(() => {
-    // if (isPatient === "patient") 
-    //  {
-    //   setCheckPat(false);
-    //    console.log(isPatient);
+    const fetchNuskhas = async () => {
+      try {
+        const ids = selectedDisease.map((item) => item.value);
+        const idsString = ids.join(",");
+        const response = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/SearchNushka?diseaseIds=${idsString}`
+        );
 
-    //  }
-    const ids = selectedDisease.map((item)=>item.value) 
-    console.log("All IDs: ",ids);
-    const idsString = ids.join(',');
-    console.log("Comma-separated IDs: ", idsString);
-    axios.get(`http://localhost/Hakeemhikmat/api/Addnushka/SearchNushka?diseaseId=${idsString}`)
-      .then((response) => {
-        // Check if the response contains data
         if (response.data && response.data !== "NO DATA") {
+          const sortedData = response.data.sort(
+            (a, b) => b.AverageRating - a.AverageRating
+          );
+          setremediesAgainstDisease(response.data);
           console.log("Nuskhas Fetched:", response.data);
         } else {
           console.log("No Nuskhas found");
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching Nuskhas:", error);
-      });
-    
-  });
+        if (error.response) {
+          // Server responded with a status other than 2xx
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+          // Request was made but no response was received
+          console.error("Request data:", error.request);
+        } else {
+          // Something happened in setting up the request
+          console.error("Error message:", error.message);
+        }
+      }
+    };
 
-  
+    fetchNuskhas();
+  }, [selectedDisease]);
 
   // const [checkPatient , setCheckPatient] = useState(false);
 
@@ -71,13 +79,18 @@ function Home({isPatient,selectedDisease }) {
 
   //   }
   // }, [patient_coming]);
+
+  const handleSeeRemedyClick = (index) => {
+    const selectedRemedy = remediesAgainstDisease[index];
+    navigate("/Home/Remedy_Disciption", { state: { remedy: selectedRemedy } });
+  };
   return (
     <>
       {
         // checkPatient ?   (<Nav2_forPatient patientResponse={patient_coming} />) : ( <CustomeNav/>)
       }
 
-      <CustomeNav isPatient={isPatient}/>
+      <CustomeNav isPatient={isPatient} />
       <div className="slider-container">
         <Carousel fade className="slider">
           <Carousel.Item>
@@ -99,11 +112,8 @@ function Home({isPatient,selectedDisease }) {
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
       >
         <Container>
-          <Row className="justify-content-md-center">
-          {
-            selectedDisease.map(()=>{})
-          }
-            <Col md={10}>
+          <Row className="justify-con tent-md-center">
+            <Col md={12}>
               <div className="search-container">
                 <img src={search} alt="search icon" className="search-icon" />
 
@@ -111,117 +121,23 @@ function Home({isPatient,selectedDisease }) {
                   type="text"
                   placeholder="Search Remedies"
                   className="search-input"
-                  value="Having hairfall"
                 />
-                <Link to="/Home/Filter" title="Filter disease">
-                  <img src={filter} alt="oops" className="filter-icon" />
-                </Link>
               </div>
             </Col>
-            {/* Button to navigate hakeem to hakeem profile  */}
-            {/* <Col md={2}>
-              {
-              checkPat ? (
-                <Button
-                  onClick={() => navigate("/HakeemProfile")}
-                  className="toHakeem"
-                >
-                  Hakeem Profile
-                </Button>
-              ) : null
-              }
-            </Col> */}
           </Row>
-        </Container>
-        <Container fluid="md">
-          <Row className="justify-content-md-center rem-row">
-            <Col md={3}>
-              <Link
-                style={{ textDecoration: "none" }}
-                title="Hair fall Remedy"
-                to="/Home/Remedy_Disciption"
-              >
+          <Row md={12}>
+            {remediesAgainstDisease.map((remedy, index) => (
+              <Col md={4} key={index}>
                 <Home_remedyCard
-                  remHeader="Hair fall Remedy"
-                  cardText="For hair treatements / for make your hair long and strong"
-                  remRating="Rating * * * * *"
+                  remedyName={remedy.NuskhaName}
+                  hakeemName={remedy.HakeemName}
+                  rating={remedy.AverageRating}
+                  onClick={() => handleSeeRemedyClick(index)}
                 />
-              </Link>
-              {/* <Link className="border_shadow">
-          <Card className="border_shadow" >
-              <Card.Img variant="top" src={safi}/>
-              <Card.Body>
-                <Card.Title>Safi</Card.Title>
-                <Card.Text>
-                 This syrup is best for Stomach and Face pimpuls
-                </Card.Text>
-                <h3>Rs.300</h3>
-                <Button variant="primary">Buy</Button>
-              </Card.Body>
-            </Card>
-          </Link> */}
-            </Col>
-            <Col md={3}>
-              <Home_remedyCard
-                remHeader="Stomach Acidity Remedy"
-                cardText="Take control of acidity with our trusted remedy"
-                remRating="Rating * * * * "
-              />
-              {/* <Link className="border_shadow" >
-          
-          <Card className="border_shadow">
-              <Card.Img variant="top" src={kidney}/>
-              <Card.Body>
-                <Card.Title>Kidney Stone Breaker</Card.Title>
-                <Card.Text>
-                 It give relief from pain/ use it for stone breaker
-                </Card.Text>
-                <h3>Rs.230</h3>
-                <Button variant="primary">Buy</Button>
-              </Card.Body>
-            </Card>
-          </Link> */}
-            </Col>
-            <Col md={3}>
-              <Home_remedyCard
-                remHeader="Heart Disease Remedy"
-                cardText="Good For blood pressure / heart related diseases"
-                remRating="Rating * * * "
-              />
-              {/* <Link className="border_shadow" > 
-          <Card className="border_shadow" >
-              <Card.Img variant="top" src={qabz}/>
-              <Card.Body>
-                <Card.Title>Majoon . Qabz relief Syrup</Card.Title>
-                <Card.Text style={{marginBottom:"40px"}} >
-                 best for belly pain and qabz relief
-                </Card.Text>
-                <h3>Rs.400</h3>
-                <Button variant="primary">Buy</Button>
-              </Card.Body>
-            </Card>
-          </Link> */}
-            </Col>
-            <Col md={3}>
-              <Home_remedyCard
-                remHeader="Remedy for Body weakness"
-                cardText="Having weakness in body , feeling Fatigue"
-                remRating="Rating * * "
-              />
-              {/* <Link className="border_shadow" >
-          <Card className="border_shadow" >
-              <Card.Img variant="top" src={shampoo}/>
-              <Card.Body>
-                <Card.Title>Herbal Valley Shampoo</Card.Title>
-                <Card.Text style={{marginBottom:"40px"}}>
-                 Try it to grow long hair
-                </Card.Text>
-                <h3>Rs.500</h3>
-                <Button variant="primary">Buy</Button>
-              </Card.Body>
-            </Card>
-          </Link> */}
-            </Col>
+              </Col>
+            ))}
+
+            {/* </Link> */}
           </Row>
         </Container>
       </ThemeProvider>

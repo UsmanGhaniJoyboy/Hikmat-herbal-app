@@ -3,7 +3,7 @@ import "./heading.css";
 
 const Custome_heading = ({title}) => {
   return (
-    <div><h2 className='heading_custome'>{title}</h2></div>
+    <div><h2 className='heading_custome'>{title} Remedy</h2></div>
   )
 }
 export default Custome_heading;
