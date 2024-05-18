@@ -9,32 +9,42 @@ import search from "../images/nounsearch.png";
 import { FaStar } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import axios from "axios";
-
-
+import Rating from "../inc/Rating";
 
 const Remedy_Disciption = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { remedy } = location.state;
-  const [steps,setSteps] = useState([]);
-  const [Ingredient,setIngredient] = useState('');
-  const [usage,setUsage] = useState('');
+  const [steps, setSteps] = useState([]);
+  const [Ingredient, setIngredient] = useState([]);
+  const [usage, setUsage] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(remedy);
-    console.log('Nuskha id aginst selecting remedy', remedy.Nuskhaid);
-    const fetchSteps = async ()=>{
-      try{
-        const response = await axios.get(`http://localhost/Hakeemhikmat/api/Addnushka/GetSteps?Nuskaid=${remedy.Nuskhaid}`);
-        if(response.data && response.data !== "NO DATA"){
-          setSteps(response.data);
+    console.log("Nuskha id aginst selecting remedy", remedy.Nuskhaid);
+    const fetchSteps = async () => {
+      try {
+        const responseSteps = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetSteps?Nuskaid=${remedy.Nuskhaid}`
+        );
+         const responseIngredient = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetIngredients?Nuskaid=${remedy.Nuskhaid}`
+        );
+        const responseUsages = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/Getusage?Nuskaid=${remedy.Nuskhaid}`
+        );
+        if (responseSteps.data && responseSteps.data &&responseIngredient.data && responseIngredient.data &&responseUsages.data &&responseUsages.data !== "NO DATA") {
+          setSteps(responseSteps.data);
+          setIngredient(responseIngredient.data)
+          setUsage(responseUsages.data)
           console.log(`steps are fetching ${steps}`);
+          console.log(`steps are fetching ${Ingredient}`);
+          console.log(`steps are fetching ${usage}`);
         }
-      }
-      catch (error) {
-        console.error("Error fetching Nuskhas:", {steps});
+      } catch (error) {
+        console.error("Error fetching Nuskhas:", { steps });
         if (error.response) {
           // Server responded with a status other than 2xx
           console.error("Response data:", error.response.data);
@@ -48,10 +58,9 @@ const Remedy_Disciption = () => {
           console.error("Error message:", error.message);
         }
       }
-      
-    }
+    };
     fetchSteps();
-  },[])
+  }, []);
 
   const [rating, setRating] = useState(null);
   return (
@@ -64,31 +73,38 @@ const Remedy_Disciption = () => {
             <Col md={8}>
               <h3>Steps</h3>
               <ol>
-                <li>Take yogurt in a bowl</li>
-                <li>Add olive oil and mix it well</li>
-                <li>Separate egg white and add to the mixture</li>
-                <li>
-                  Apply on Dry hair and leave it for 30 minutes before washing
-                  it
-                </li>
+                {steps.map((item, index) => (
+                  <li> {item.Nuskhasteps}</li>
+                ))}
+              </ol>
+
+                <h3>Usage</h3>
+              <ol>
+                {usage.map((item, index) => (
+                  <li> {item.Nuskhausage}</li>
+                ))}
               </ol>
             </Col>
             <Col md={2}>
               <h3>Ingredient</h3>
               <ul>
-                <li>Yogurt(500ml)</li>
-                <li>Olive oil(10g)</li>
-                <li>Egg(1)</li>
+                {
+                  Ingredient.map((item,index)=>(
+                    <li>{item.IngredientName} <span>{item.ingredientquantity}</span><span>({item.ingredientunit})</span></li>
+
+                  ))
+                }
+                
               </ul>
             </Col>
           </Row>
-          <Row className="justify-content-md-center">
+          <Row className="justify-content-md-center rating-product">
             <Col md={8} className="Rating-disc">
-              <div className="rating">
-                <span style={{ fontSize: "1.7rem", fontWeight: "bold" }}>
-                  Rating :{" "}
+              {/* <div className="rating"> */}
+                <span style={{flexDirection:'row',display:'flex', fontSize: "1.7rem", fontWeight: "bold" }}>
+                  Rating : {<Rating rating={remedy.AverageRating} />}
                 </span>
-                {[...Array(4)].map((star, index) => {
+                {/* {[...Array(4)].map((star, index) => {
                   const currentRating = index + 1;
                   return (
                     <FaStar
@@ -98,8 +114,12 @@ const Remedy_Disciption = () => {
                       size={20}
                     />
                   );
-                })}
-              </div>
+                })} */}
+                {
+                  
+
+                }
+              {/* </div> */}
             </Col>
             <Col md={2}>
               <div className="btn-pro">
@@ -151,7 +171,6 @@ const Remedy_Disciption = () => {
             <Col md={10}>
               <h3>Comment & Reply</h3>
             </Col>
-
           </Row>
         </Container>
       </div>

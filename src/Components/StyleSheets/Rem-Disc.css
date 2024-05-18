@@ -10,6 +10,7 @@
     align-items: center;
     margin-bottom: 2rem;
     justify-content: space-between;
+    /* border: 1px solid black; */
 
 }
 .search-container-Rem {
@@ -49,6 +50,7 @@
   .btn-pro{
     background-color:#0b7b84 ;
     border-radius: 10px;
+    margin-top: 0.4rem;
   }
   .sub{
     width: 50%;

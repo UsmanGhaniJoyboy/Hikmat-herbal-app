@@ -11,20 +11,24 @@ const Home_remedyCard = ({
   rating,
   onClick,
   nuskhaId,
+  diseaseName,
 }) => {
-
   const navigate = useNavigate();
 
-
-  return (
+  return (  
     <Card className="mb-3 home_card">
       <Card.Body>
         <Card.Title className="rem-name">
           Remedy Name :{" "}
           <span style={{ fontWeight: "normal", fontSize: "1.2rem" }}>
-
             {remedyName}
           </span>
+        </Card.Title>
+        <Card.Title className="hakeem-name">
+          Disease :{" "}
+          <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+            {diseaseName}
+          </span>{" "}
         </Card.Title>
         <Card.Title className="hakeem-name">
           Prescribed by:{" "}

@@ -14,10 +14,10 @@
     text-decoration: none;
     margin-top: 10%;
     width: auto;
-    background-color:rgb(171, 231, 171);
+    /* background-color:rgb(171, 231, 171); */
     /* color: black; */
     transition: background-color 0.5s ease, color 0.5s ease; 
-    background: linear-gradient(45deg, rgb(101, 228, 235), rgb(5, 155, 168));
+    background: linear-gradient(45deg, rgb(82, 165, 170), rgb(21, 194, 210));
     /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.9); */
 
 }

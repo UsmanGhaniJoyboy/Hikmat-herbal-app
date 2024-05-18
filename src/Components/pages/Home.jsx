@@ -132,6 +132,7 @@ function Home({ isPatient, selectedDisease }) {
                   remedyName={remedy.NuskhaName}
                   hakeemName={remedy.HakeemName}
                   rating={remedy.AverageRating}
+                  diseaseName={remedy.DiseaseName}
                   onClick={() => handleSeeRemedyClick(index)}
                 />
               </Col>
