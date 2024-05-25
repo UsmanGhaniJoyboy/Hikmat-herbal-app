@@ -88,8 +88,8 @@ function Add_Remedies() {
         }
       );
 
-      const nuskhaid = response.data;
-      setNuskhaId(nuskhaid);
+      var nuskhaid = response.data;
+      // setNuskhaId(nuskhaid);
       console.log("Data submitted successfully:", nuskhaid);
 
       // Prepare form data for the second API call
@@ -115,7 +115,7 @@ function Add_Remedies() {
       console.error("Error submitting data:", error);
       // Handle error (e.g., show error message)
     }
-    navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaId}});
+    navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
   };
 
   // Define options here

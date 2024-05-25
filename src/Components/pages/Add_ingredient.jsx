@@ -4,7 +4,6 @@ import Custome_heading from "../inc/Custome_heading";
 import "../StyleSheets/Add_ingredient.css"; // Make sure to import the CSS file
 import { useNavigate } from "react-router-dom";
 import Modal from "react-bootstrap/Modal";
-import Modelbtn from "../inc/Model";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -12,25 +11,19 @@ import { useLocation } from "react-router-dom";
 const Add_ingredient = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { Nuskha_Id } = location.state;
+  const { Nuskha_Id } = location.state || {};
 
-  const [remedy_id, setRemedy_id] = useState("");
   const [ingredientId, setIngredientId] = useState("");
   const [ingredient, setIngredient] = useState("");
-  const [quantity, setQuantity] = useState();
+  const [quantity, setQuantity] = useState("");
   const [unit, setUnit] = useState("");
-  //handle model in these 3 states
   const [show, setShow] = useState(false);
 
-  useEffect(()=>{
-    // setRemedy_id(Nuskha_Id);
-    console.log("remedy id is coming ",Nuskha_Id);
-  })
+  useEffect(() => {
+    console.log("Remedy ID is: ", Nuskha_Id);
+  }, [Nuskha_Id]);
 
   const handleClose = () => setShow(false);
-
-
-
 
   const handleShow = async () => {
     const formData = new FormData();
@@ -48,44 +41,51 @@ const Add_ingredient = () => {
         }
       );
 
-      setIngredientId(responseAddIng.data);
+      if (responseAddIng.data && responseAddIng.data !== "NO DATA") {
+        const newIngredientId = responseAddIng.data;
+        setIngredientId(newIngredientId);
+        console.log("Ingredient added, ID: ", newIngredientId);
 
-      if (responseAddIng.data && responseAddIng.data != "NO DATA") {
-        console.log("Ingredient added : ", ingredientId);
+        const formData2 = new FormData();
+        formData2.append("quantity", quantity);
+        formData2.append("unit", unit);
+        formData2.append("r_id", Nuskha_Id);
+        formData2.append("i_id", newIngredientId);
+
+        console.log("Sending data to AddIngrdeintsquantity API: ", {
+          quantity,
+          unit,
+          r_id: Nuskha_Id,
+          i_id: newIngredientId,
+        });
+
+        const responseAddIngredient = await axios.post(
+          "http://localhost/Hakeemhikmat/api/Addnushka/AddIngrdeintsquantity",
+          formData2,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
+        console.log("Quantity added: ", responseAddIngredient.data);
+        setShow(true); // Open the modal after successful API call
       }
-      const formData2 = new FormData();
-      formData2.append("quantity", quantity);
-      formData2.append("unit", unit);
-      formData2.append("r_id", Nuskha_Id);
-      formData2.append("i_id", ingredientId);
-
-      const responseAddIngredient = await axios.post(
-        "http://localhost/Hakeemhikmat/api/Addnushka/AddIngrdeintsquantity",
-        formData2,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
     } catch (error) {
-      if (error.responseAddIng) {
-        console.error("Response data:", error.responseAddIng.data);
-        console.error("Response status:", error.responseAddIng.status);
-        console.error("Response headers:", error.responseAddIng.headers);
+      console.error("Error during API call:", error);
+      if (error.response) {
+        console.error("Response data:", error.response.data);
+        console.error("Response status:", error.response.status);
+        console.error("Response headers:", error.response.headers);
       } else if (error.request) {
-        // Request was made but no response was received
         console.error("Request data:", error.request);
       } else {
-        // Something happened in setting up the request
         console.error("Error message:", error.message);
       }
     }
-    // All fields are filled, navigate to next step
-    // navigate("/HakeemProfile/Add_Remedies/Add_ingredient/Steps");
-    setShow(true);
   };
-  
+
   const handleAddIngredient = () => {
     setIngredient("");
     setQuantity("");
@@ -108,13 +108,12 @@ const Add_ingredient = () => {
   const handleUnitChange = (e) => {
     setUnit(e.target.value);
   };
+
   return (
     <div>
       <CustomeNav />
       <Custome_heading title="Add Ingredient" />
       <div className="add-Ing-container text-center">
-        {" "}
-        {/* Apply the styling class */}
         <form>
           <div className="AddIngredient_form-group">
             <input
@@ -122,7 +121,7 @@ const Add_ingredient = () => {
               placeholder="Add ingredient"
               value={ingredient}
               onChange={handleIngredientChange}
-              className="form-control" // Apply the styling class
+              className="form-control"
             />
           </div>
           <div className="form-group">
@@ -131,7 +130,7 @@ const Add_ingredient = () => {
               placeholder="Add quantity"
               value={quantity}
               onChange={handleQuantityChange}
-              className="form-control" // Apply the styling class
+              className="form-control"
             />
           </div>
           <div className="form-group">
@@ -140,27 +139,13 @@ const Add_ingredient = () => {
               placeholder="Add unit"
               value={unit}
               onChange={handleUnitChange}
-              className="form-control" // Apply the styling class
+              className="form-control"
             />
-            {/* <button
-              type="button"
-              onClick={handleAddQuantity}
-              // Apply the styling class and add margin-top
-            >
-              Add Ingredient
-            </button> */}
           </div>
-          {/* <button
-            type="button"
-            onClick={handleNextStep}
-            // Apply the styling class
-          >
-            Move to next step
-          </button> */}
         </form>
-        <button variant="primary" onClick={handleShow}>
+        <Button variant="primary" onClick={handleShow}>
           Next Step
-        </button>
+        </Button>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title></Modal.Title>
