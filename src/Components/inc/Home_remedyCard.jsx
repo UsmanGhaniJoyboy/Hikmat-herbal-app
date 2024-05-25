@@ -13,6 +13,10 @@ const Home_remedyCard = ({
   nuskhaId,
   diseaseName,
 }) => {
+  useEffect(()=>{
+    console.log(``)
+  })
+
   const navigate = useNavigate();
 
   return (  

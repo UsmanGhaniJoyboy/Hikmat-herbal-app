@@ -6,7 +6,6 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import "../StyleSheets/Rem-Disc.css";
 import search from "../images/nounsearch.png";
-import { FaStar } from "react-icons/fa";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -74,52 +73,41 @@ const Remedy_Disciption = () => {
               <h3>Steps</h3>
               <ol>
                 {steps.map((item, index) => (
-                  <li> {item.Nuskhasteps}</li>
+                  <li key={index}> {item.Nuskhasteps}</li>
                 ))}
               </ol>
 
-                <h3>Usage</h3>
+              <h3>Usage</h3>
               <ol>
                 {usage.map((item, index) => (
-                  <li> {item.Nuskhausage}</li>
+                  <li key={index}> {item.Nuskhausage}</li>
                 ))}
               </ol>
             </Col>
             <Col md={2}>
               <h3>Ingredient</h3>
               <ul>
-                {
-                  Ingredient.map((item,index)=>(
-                    <li>{item.IngredientName} <span>{item.ingredientquantity}</span><span>({item.ingredientunit})</span></li>
-
-                  ))
-                }
-                
+                {Ingredient.map((item, index) => (
+                  <li key={index}>
+                    {item.IngredientName} <span>{item.ingredientquantity}</span>
+                    <span>({item.ingredientunit})</span>
+                  </li>
+                ))}
               </ul>
             </Col>
           </Row>
           <Row className="justify-content-md-center rating-product">
             <Col md={8} className="Rating-disc">
-              {/* <div className="rating"> */}
-                <span style={{flexDirection:'row',display:'flex', fontSize: "1.7rem", fontWeight: "bold" }}>
-                  Rating : {<Rating rating={remedy.AverageRating} />}
-                </span>
-                {/* {[...Array(4)].map((star, index) => {
-                  const currentRating = index + 1;
-                  return (
-                    <FaStar
-                      style={{ marginLeft: "10px" }}
-                      className="star"
-                      color="orange"
-                      size={20}
-                    />
-                  );
-                })} */}
-                {
-                  
-
-                }
-              {/* </div> */}
+              <span
+                style={{
+                  flexDirection: "row",
+                  display: "flex",
+                  fontSize: "1.7rem",
+                  fontWeight: "bold",
+                }}
+              >
+                Rating : <Rating rating={remedy.AverageRating} clickable={true} />
+              </span>
             </Col>
             <Col md={2}>
               <div className="btn-pro">

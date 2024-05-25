@@ -10,21 +10,25 @@ import logout from "../images/logout.png";
 import herbal from "../images/herbal-2835137.png";
 import shoping from "../images/shopping.png";
 import sales from "../images/sales again.png";
+import viewRem from "../images/antibiotic.png";
 import "../StyleSheets/Hikmat.css";
 
 function HakeemProfile({sendName}) {
   const navigate = useNavigate();
-  const [hakeemName,setHakeemName] = useState('');
+  const [hakeemName,setHakeemName] = useState([]);
 
   useEffect(()=>{
-      setHakeemName(sendName);
+      
+    setHakeemName(sendName);
+    console.log("Data of hakeem is ",hakeemName);
   })
 
 
   
 
   const handleAddRemediesClick = () => {
-    navigate("/HakeemProfile/Add_Remedies");
+    console.log(`hakeem data in hakeem profile page ${hakeemName}`)
+    navigate("/HakeemProfile/Add_Remedies",{state:{HakeemId :hakeemName}});
   };
 
 
@@ -62,7 +66,7 @@ function HakeemProfile({sendName}) {
                 <Image src={profile} rounded className="profile_pic" />
               </div> */}
               <div className="hakeem_info">
-                <span>Name : {hakeemName} </span><br />
+                <span>Name : {hakeemName.name} </span><br />
                 {/* <span>Age : {hakeemAge} </span><br />
                 <span>Experience : {hakeemExp} </span> */}
               </div>
@@ -71,7 +75,7 @@ function HakeemProfile({sendName}) {
                 
             {/* Add remedy card */}
             <div className="cards">
-              <Card style={{ width: "13rem" }} className="inside-cards">
+              <Card style={{ width: "15rem" }} className="inside-cards">
                 <Card.Img
                   variant="top"
                   src={herbal}
@@ -85,10 +89,10 @@ function HakeemProfile({sendName}) {
                 </Card.Body>
               </Card>
               {/* View Remedy Detail card */}
-              <Card style={{ width: "13rem" }} className="inside-cards">
+              <Card style={{ width: "15rem" }} className="inside-cards">
                 <Card.Img
                   variant="top"
-                  src={herbal}
+                  src={viewRem}
                   className="cards_width"
                   style={{ height: "200px" }}
                 />

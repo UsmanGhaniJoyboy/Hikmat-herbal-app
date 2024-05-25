@@ -50,7 +50,7 @@ const Login = ({ handleUserRole, sendName }) => {
             handleUserRole(data.rol);
             navigate("/SettingUpPatient");
           } else {
-            sendName(data.name);
+            sendName(data);
             navigate("/HakeemProfile");
           }
           console.log(data);

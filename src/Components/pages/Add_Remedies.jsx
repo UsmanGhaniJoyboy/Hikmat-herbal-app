@@ -1,65 +1,143 @@
 import CustomeNav from "../inc/CustomeNav";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../StyleSheets/Add_Rem.css";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import Custome_heading from "../inc/Custome_heading";
+import { useLocation } from "react-router-dom";
+import axios from "axios";
+// import Select from "react-select";
 
 function Add_Remedies() {
   const navigate = useNavigate();
-
-  const [selectedDiseases, setSelectedDiseases] = useState([]);
+  const location = useLocation();
+  const { HakeemId } = location.state;
+  const [hakeemdata, setHakeemdata] = useState("");
+  const [diseases, setDiseases] = useState([]);
+  //This state is for seting the selected disease
+  const [selectedDisease, setSelectedDisease] = useState([]);
+  //for nuskha id
+  const [nuskhaId, setNuskhaId] = useState("");
   const [remedyName, setRemedyName] = useState("");
-  const [Remedy_privacy, setRemedy_privacy] = useState({
-    Public: false,
-    Private: false,
-  });
+  //for publicand private
+  const [Remedy_privacy, setRemedy_privacy] = useState("");
 
-  const handleDiseaseChange = (selectedOptions) => {
-    setSelectedDiseases(selectedOptions.map((option) => option.value));
+  useEffect(() => {
+    // setHakeemdata(HakeemId);
+    console.log("Hakeem data is coming on Add remedy Page ", HakeemId);
+    console.log("Hakeem's id is coming on Add Remedy page ", HakeemId.id);
+
+    const addRemedy = async () => {
+      try {
+        const responseDiseases = await axios
+          .get("http://localhost/Hakeemhikmat/api/Addnushka/showAllDisease")
+          .then((responseDiseases) => {
+            // Check if the response contains data
+            if (responseDiseases.data && responseDiseases.data !== "NO DATA") {
+              console.log("Diseases:", responseDiseases.data);
+              // setDiseases(response.data);
+              setDiseases(
+                responseDiseases.data.map((disease) => ({
+                  id: disease.id,
+                  label: disease.name,
+                }))
+              ); 
+              // handleDisease(setDiseases);
+              console.log(diseases);
+            } else {
+              console.log("No diseases found");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching diseases:", error);
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    addRemedy();
+  }, [HakeemId.id]);
+
+  // const handleDiseaseChange = (selectedOptions) => {
+  //   setSelectedDiseases(selectedOptions.map((option) => option.value));
+  // };
+
+  const gotoIngredient = () => {
+    console.log(`selected disease id ${selectedDisease}`);
+    console.log(`Name ${remedyName}`);
+    console.log(`Publicity ${Remedy_privacy}`);
   };
 
-  const gotoIngredient=()=>{
-    navigate("/HakeemProfile/Add_Remedies/Add_ingredient")
-  }
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", {
-      selectedDiseases,
-      remedyName,
-      Remedy_privacy,
-    });
+    const formData = new FormData();
+    formData.append("h_id",  HakeemId.id);
+    formData.append("name", remedyName);
+    formData.append("publicity", Remedy_privacy);
+
+    try {
+      // First API call to add the remedy and get the NuskhaId
+      const response = await axios.post(
+        "http://localhost/Hakeemhikmat/api/Addnushka/AddRemedy",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const nuskhaid = response.data;
+      setNuskhaId(nuskhaid);
+      console.log("Data submitted successfully:", nuskhaid);
+
+      // Prepare form data for the second API call
+      const formData2 = new FormData();
+      formData2.append("n_id", nuskhaid);
+      formData2.append("d_id", selectedDisease.id);
+
+      // Second API call to add the nuskha data against the disease
+      const responseDisaseNuskha = await axios.post(
+        "http://localhost/Hakeemhikmat/api/Addnushka/AddNushkaData",
+        formData2,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Nuskha data added successfully:", responseDisaseNuskha.data);
+
+      // Handle success (e.g., navigate to next step, show success message)
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      // Handle error (e.g., show error message)
+    }
+    navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaId}});
   };
 
   // Define options here
-  const options = [
-    { value: "asthma", label: "Asthma" },
-    { value: "diabetes", label: "Diabetes" },
-    { value: "hypertension", label: "Hypertension" },
-  ];
 
   return (
     <>
       <CustomeNav />
-      <Custome_heading
-      title="Add Remedies"
-      />
+      <Custome_heading title="Add Remedies" />
       <div className="add-remedies-container">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="disease">Diseases:</label>
+            <label htmlFor="disease">Diseases</label>
             <Select
-              id="disease"
-              isMulti
-              value={options.filter((option) =>
-                selectedDiseases.includes(option.value)
-              )}
-              onChange={handleDiseaseChange}
-              options={options}
-              required
+              options={diseases}
+              value={selectedDisease}
+              onChange={(selectedOption) => {
+                setSelectedDisease(selectedOption);
+                console.log("Selected disease:", selectedOption);
+              }}
             />
-            <div>Disease Selected: {selectedDiseases.join(", ")}</div>
+
+            {/* <div>Disease Selected: {selectedDiseases}</div> */}
           </div>
 
           <div className="form-group">
@@ -73,7 +151,7 @@ function Add_Remedies() {
               required
             />
           </div>
-
+          {/* Radion button */}
           <div className="form-group">
             <label>Remedy Should be:</label>
             <div className="radio-group">
@@ -82,10 +160,9 @@ function Add_Remedies() {
                   type="radio"
                   id="Public"
                   name="Remedy_privacy"
-                  checked={Remedy_privacy.Public}
-                  onChange={() =>
-                    setRemedy_privacy({ Public: true, Private: false })
-                  }
+                  value="Public"
+                  checked={Remedy_privacy === "Public"}
+                  onChange={(e) => setRemedy_privacy(e.target.value)}
                 />
                 Public
               </label>
@@ -94,16 +171,17 @@ function Add_Remedies() {
                   type="radio"
                   id="Private"
                   name="Remedy_privacy"
-                  checked={Remedy_privacy.Private}
-                  onChange={() =>
-                    setRemedy_privacy({ Public: false, Private: true })
-                  }
+                  value="Private"
+                  checked={Remedy_privacy === "Private"}
+                  onChange={(e) => setRemedy_privacy(e.target.value)}
                 />
                 Private
               </label>
             </div>
           </div>
-          <button onClick={gotoIngredient} type="submit">Move to next step</button>
+          <button onClick={handleSubmit} type="submit">
+            Move to next step
+          </button>
         </form>
       </div>
     </>

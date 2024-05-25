@@ -26,7 +26,7 @@ function App() {
   // const logout = useLocation();
   // const navigate = useNavigate();
   const [isPatient, setIsPatient] = useState('');
-  const [name, setName ] = useState('');
+  const [name, setName ] = useState([]);
   const [selectedDisease, setSelectedDisease] = useState([]);
   
 
