@@ -115,6 +115,7 @@ function Add_Remedies() {
       console.error("Error submitting data:", error);
       // Handle error (e.g., show error message)
     }
+    // navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
     navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
   };
 

@@ -94,7 +94,7 @@ const Add_ingredient = () => {
   };
 
   const handleSaveChanges = () => {
-    navigate("/HakeemProfile/Add_Remedies/Add_ingredient/Steps");
+    navigate("/HakeemProfile/Add_Remedies/Add_ingredient/Steps",{state:{RemedyId :Nuskha_Id}});
   };
 
   const handleIngredientChange = (e) => {

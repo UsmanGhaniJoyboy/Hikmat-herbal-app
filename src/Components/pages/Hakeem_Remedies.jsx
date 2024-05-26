@@ -20,7 +20,7 @@ function Hakeem_Remedies() {
   return (
     <>
       <CustomeNav />
-      <Custome_heading title="Your Remedies" />
+      <Custome_heading title="Your " />
 
       <Container>
         <Row className="justify-content-md-center">
@@ -39,26 +39,6 @@ function Hakeem_Remedies() {
         </Row>
         <div className="rem_container">
           <Row>
-            <Col xs={6} md={4}>
-              <Remedy_card
-                title="Hairfall Remedy"
-                description="Make your hair strong and healthy"
-                Comment="Comment & Reply"
-                Add_product="Add Product"
-                Rating="Rating *****"
-                link="/HakeemProfile/Hakeem_Remedies/Add_product"
-              />
-            </Col>
-            <Col xs={6} md={4}>
-              <Remedy_card
-                title="Stomach pain Remedy"
-                description="Help to cure Stomach pain & other Related problems"
-                Comment="Comment & Reply"
-                Add_product="Add Product"
-                Rating="Rating *****"
-                link="/HakeemProfile/Hakeem_Remedies/Add_product"
-              />
-            </Col>
             <Col xs={6} md={4}>
               <Remedy_card
                 title="Hairfall Remedy"
