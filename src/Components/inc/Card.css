@@ -1,47 +1,55 @@
 .custome_card {
-    height: 30vh;
-    width: 400px;
-    border: 1px solid black;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-evenly;
-    background-color: bisque;
-    color: black;
-    flex-wrap: wrap;
-    position: relative; /* Set position to relative */
+  height: auto; /* Adjust height to auto for better responsiveness */
+  width: 100%; /* Use 100% width for better responsiveness */
+  max-width: 400px; /* Set a max-width to prevent it from growing too large */
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column; /* Use column direction for better layout control */
+  justify-content: space-between;
+  background-color: bisque;
+  transition: background-color 0.5s ease, color 0.5s ease; 
+  /* background: linear-gradient(45deg,bisque,rgb(110, 75, 31)); */
+  color: black;
+  flex-wrap: wrap;
+  margin: 10px auto; /* Center the card and add margin for spacing */
+  padding: 10px; /* Add padding for better spacing */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  position: relative;
+}
+
+.card_1 {
+  position: relative;
+  flex: 1; /* Allow the card body to grow and shrink as needed */
+  display: flex;
+  flex-direction: column; /* Use column direction for better layout control */
+  justify-content: space-between;
+}
+
+.card_btn {
+  display: flex;
+  justify-content: space-around; /* Distribute space around the links */
+  margin-top: 10px; /* Add margin-top for spacing */
+}
+
+.card_rating {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px; /* Add margin-top for spacing */
+}
+
+.card_link {
+  color: #007bff; /* Change link color */
+  font-weight: bold; /* Make the text bold */
+  text-decoration: none;
+}
+
+.card_link:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+@media only screen and (max-width: 768px) {
+  .custome_card {
+      width: 100%; /* Ensure the card takes the full width on smaller screens */
   }
-  .card_1{
-    position: relative;
-  }
-  .card_btn {
-    position: absolute; /* Set position to absolute */
-    bottom: 10px; /* Adjust bottom spacing as needed */
-    width: 90%; /* Ensure links span the entire width of the card */
-    display: flex;
-    justify-content: center; /* Align links to the right */
-    /* border: 1px solid black; */
-  }
-  .card_rating{
-    position: absolute;
-    bottom: 30px;
-    width: 90%;
-    display: flex;
-    justify-content: center;
-  }
-  .card_link {
-    color: #007bff; /* Change link color */
-    margin-right: 10px; /* Add spacing between links */
-    font-weight: bold; /* Make the text bold */
-    text-decoration: none;
-  }
-  
-  .card_link:hover {
-    text-decoration: underline; /* Add underline on hover */
-  }
-  
-  @media only screen and (max-width: 768px) {
-    .custome_card {
-      width: 100%; /* Change width to 100% when screen width is 768px or less */
-    }
-  }
-  
+}

@@ -14,6 +14,7 @@ import Rating from "../inc/Rating";
 
 const Remedy_Disciption = () => {
   const navigate = useNavigate();
+  
   const location = useLocation();
   const { remedy } = location.state;
   const [steps, setSteps] = useState([]);
@@ -46,9 +47,9 @@ const Remedy_Disciption = () => {
         console.error("Error fetching Nuskhas:", { steps });
         if (error.response) {
           // Server responded with a status other than 2xx
-          console.error("Response data:", error.response.data);
-          console.error("Response status:", error.response.status);
-          console.error("Response headers:", error.response.headers);
+            console.error("Response data:", error.response.data);
+            console.error("Response status:", error.response.status);
+            console.error("Response headers:", error.response.headers);
         } else if (error.request) {
           // Request was made but no response was received
           console.error("Request data:", error.request);
@@ -60,6 +61,8 @@ const Remedy_Disciption = () => {
     };
     fetchSteps();
   }, []);
+
+  const handleSubmitbtn = ()=>{}
 
   const [rating, setRating] = useState(null);
   return (
@@ -134,7 +137,7 @@ const Remedy_Disciption = () => {
                   />
                 </div>
                 <div className="qst-btn">
-                  <Button type="submit" className="question-btn">
+                  <Button type="submit" className="question-btn" onClick={handleSubmitbtn}>
                     Submit
                   </Button>
                 </div>
@@ -152,14 +155,14 @@ const Remedy_Disciption = () => {
               </Button>
             </Col>
           </Row>
-          <Row
+          {/* <Row
             className="justify-content-md-center "
             style={{ marginTop: "20px" }}
           >
             <Col md={10}>
               <h3>Comment & Reply</h3>
             </Col>
-          </Row>
+          </Row> */}
         </Container>
       </div>
     </div>

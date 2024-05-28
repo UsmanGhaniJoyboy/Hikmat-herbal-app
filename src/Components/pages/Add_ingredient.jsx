@@ -143,9 +143,9 @@ const Add_ingredient = () => {
             />
           </div>
         </form>
-        <Button variant="primary" onClick={handleShow}>
+        <button variant="primary" onClick={handleShow}>
           Next Step
-        </Button>
+        </button>
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title></Modal.Title>

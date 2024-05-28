@@ -49,6 +49,29 @@ function Hakeem_Remedies() {
                 link="/HakeemProfile/Hakeem_Remedies/Add_product"
               />
             </Col>
+            
+            <Col xs={6} md={4}>
+              <Remedy_card
+                title="Hairfall Remedy"
+                description="Make your hair strong and healthy"
+                Comment="Comment & Reply"
+                Add_product="Add Product"
+                Rating="Rating *****"
+                link="/HakeemProfile/Hakeem_Remedies/Add_product"
+              />
+            </Col>
+            
+            <Col xs={6} md={4}>
+              <Remedy_card
+                title="Hairfall Remedy"
+                description="Make your hair strong and healthy"
+                Comment="Comment & Reply"
+                Add_product="Add Product"
+                Rating="Rating *****"
+                link="/HakeemProfile/Hakeem_Remedies/Add_product"
+              />
+            </Col>
+            
           </Row>
         </div>
       </Container>
