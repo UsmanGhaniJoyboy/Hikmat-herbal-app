@@ -20,20 +20,29 @@ import { FaStar } from "react-icons/fa";
 import filter from "../images/filter.png";
 // import Footer from "../inc/Footer";
 import Home_remedyCard from "../inc/Home_remedyCard";
-// import Nav2_forPatient from "../inc/Nav2_forPatient";
+import Nav2_forPatient from "../inc/Nav2_forPatient";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function Home({isPatient,  selectedDisease }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [remediesAgainstDisease, setremediesAgainstDisease] = useState([]);
-  // const [checkPatient,setCheckPatient] = useState(isPatient);
+  const [checkPatient,setCheckPatient] = useState(null);
 
   // const [checkPat, setCheckPat] = useState(true);
 
   // const { response_Patient } = location.state || {};
   useEffect(() => {
-    console.log("Who is coming : ",isPatient);
+    console.log("Who is coming : ",isPatient.rol);
+    handleTheRole();
+    // if(isPatient.rol == "Patient"){
+    //   setCheckPatient(true);
+    //   return checkPatient;
+    // }
+    // else{
+    //   setCheckPatient(false);
+    //   return checkPatient;
+    // }
 
     const fetchNuskhas = async () => {
       try {
@@ -83,15 +92,28 @@ function Home({isPatient,  selectedDisease }) {
   //   }
   // }, [patient_coming]);
 
+  
+
   const handleSeeRemedyClick = (index) => {
     const selectedRemedy = remediesAgainstDisease[index];
-    navigate("/Home/Remedy_Disciption", { state: { remedy: selectedRemedy } });
-  };
+    navigate("/Home/Remedy_Disciption", { state: { remedy: selectedRemedy, patientComing : isPatient } });
+  }
+
+  const handleTheRole =()=>{
+    if(isPatient.rol == 'Patient'){
+      setCheckPatient(true);
+        return checkPatient;
+      }
+      else{
+        setCheckPatient(false);
+        return checkPatient;
+      }
+    }
   return (
     <>
-      {/* {
+      {
         checkPatient ?   (<Nav2_forPatient />) : ( <CustomeNav/>)
-      } */}
+      }
 
       {/* <CustomeNav  /> */}
 
@@ -150,4 +172,4 @@ function Home({isPatient,  selectedDisease }) {
   );
 }
 
-export default Home;
+export default Home;  

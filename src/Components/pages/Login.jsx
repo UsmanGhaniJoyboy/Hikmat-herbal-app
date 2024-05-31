@@ -51,7 +51,7 @@ const Login = ({ handleUserRole, sendName }) => {
           // Redirect to HakeemProfile page
           if (data.rol === "Patient") {
             // navigate("/Home");
-            handleUserRole(data.rol);
+            handleUserRole(data);
             navigate("/SettingUpPatient");
           } else {
             sendName(data);

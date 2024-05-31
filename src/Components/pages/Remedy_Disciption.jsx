@@ -10,18 +10,24 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Rating from "../inc/Rating";
+import ClickableRating from "../inc/ClickableRating";
 
 const Remedy_Disciption = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { remedy } = location.state;
+  const { patientComing } = location.state;
   const [steps, setSteps] = useState([]);
   const [Ingredient, setIngredient] = useState([]);
   const [usage, setUsage] = useState([]);
+  const [checkRatingperson, setcheckRatingperson] = useState('');
+  const [userRating, setUserRating] = useState(0);
 
   useEffect(() => {
     console.log(remedy);
     console.log("Nuskha id aginst selecting remedy", remedy.Nuskhaid);
+    console.log("Patient id, where are you?", patientComing.id);
+
     const fetchSteps = async () => {
       try {
         const responseSteps = await axios.get(
@@ -64,9 +70,36 @@ const Remedy_Disciption = () => {
     fetchSteps();
   }, []);
 
+  const handleRating = (rate) => {
+    setUserRating(rate);
+    console.log(`User rated: ${rate}`);
+    // You can also send the rating to the server here if needed
+  };
+
   const handleSubmitbtn = () => {
     // Add your submit button logic here
+    const Submit_comments = async ()=>{
+      try{
+        const formData = new FormData();
+      formData.append("n_id", remedy.Nuskhaid);
+      formData.append("u_id", patientComing.id);
+
+        const responseSubmit = await axios.post(
+          "http://localhost/Hakeemhikmat/api/Addnushka/ratingcomments",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+      }
+      catch(error){
+        
+      }
+    }
   };
+
 
   return (
     <div>
@@ -114,14 +147,11 @@ const Remedy_Disciption = () => {
                 Rating: <Rating rating={remedy.AverageRating} clickable={false} showNumber={true} />
               </span>
             </Col>
+            {/* Give rating here */}
             <Col md={2}>
-              <div className="btn-pro">
-                {/* <Button
-                  onClick={() => navigate("/Remedies/RemediesDetails")}
-                  type="submit"
-                >
-                  View Product
-                </Button> */}
+              <div className="rating_set">
+                <span style={{fontSize:'1.7rem',fontWeight:'bold'}}>Rate: </span>
+                <ClickableRating onRate={handleRating} />
               </div>
             </Col>
           </Row>
