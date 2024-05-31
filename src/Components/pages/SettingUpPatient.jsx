@@ -67,7 +67,7 @@ const SettingUpPatient = ({handleSelectedDisease}) => {
             fontWeight: "bold",
           }}
         >
-          Create your Profile
+          Setting up Profile
         </h3>
         <form>
         <Select

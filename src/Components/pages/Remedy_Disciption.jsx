@@ -5,7 +5,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import "../StyleSheets/Rem-Disc.css";
-import search from "../images/nounsearch.png";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -14,7 +13,6 @@ import Rating from "../inc/Rating";
 
 const Remedy_Disciption = () => {
   const navigate = useNavigate();
-  
   const location = useLocation();
   const { remedy } = location.state;
   const [steps, setSteps] = useState([]);
@@ -29,16 +27,23 @@ const Remedy_Disciption = () => {
         const responseSteps = await axios.get(
           `http://localhost/Hakeemhikmat/api/Addnushka/GetSteps?Nuskaid=${remedy.Nuskhaid}`
         );
-         const responseIngredient = await axios.get(
+        const responseIngredient = await axios.get(
           `http://localhost/Hakeemhikmat/api/Addnushka/GetIngredients?Nuskaid=${remedy.Nuskhaid}`
         );
         const responseUsages = await axios.get(
           `http://localhost/Hakeemhikmat/api/Addnushka/Getusage?Nuskaid=${remedy.Nuskhaid}`
         );
-        if (responseSteps.data && responseSteps.data &&responseIngredient.data && responseIngredient.data &&responseUsages.data &&responseUsages.data !== "NO DATA") {
+        if (
+          responseSteps.data &&
+          responseSteps.data &&
+          responseIngredient.data &&
+          responseIngredient.data &&
+          responseUsages.data &&
+          responseUsages.data !== "NO DATA"
+        ) {
           setSteps(responseSteps.data);
-          setIngredient(responseIngredient.data)
-          setUsage(responseUsages.data)
+          setIngredient(responseIngredient.data);
+          setUsage(responseUsages.data);
           console.log(`steps are fetching ${steps}`);
           console.log(`steps are fetching ${Ingredient}`);
           console.log(`steps are fetching ${usage}`);
@@ -46,15 +51,12 @@ const Remedy_Disciption = () => {
       } catch (error) {
         console.error("Error fetching Nuskhas:", { steps });
         if (error.response) {
-          // Server responded with a status other than 2xx
-            console.error("Response data:", error.response.data);
-            console.error("Response status:", error.response.status);
-            console.error("Response headers:", error.response.headers);
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
         } else if (error.request) {
-          // Request was made but no response was received
           console.error("Request data:", error.request);
         } else {
-          // Something happened in setting up the request
           console.error("Error message:", error.message);
         }
       }
@@ -62,28 +64,28 @@ const Remedy_Disciption = () => {
     fetchSteps();
   }, []);
 
-  const handleSubmitbtn = ()=>{}
+  const handleSubmitbtn = () => {
+    // Add your submit button logic here
+  };
 
-  const [rating, setRating] = useState(null);
   return (
     <div>
       <CustomeNav />
       <Custome_heading title={remedy.NuskhaName} />
       <div className="rem-container">
         <Container fluid="md" className="inner-cont">
-          <Row className="justify-content-md-center ing-steps ">
+          <Row className="justify-content-md-center ing-steps">
             <Col md={8}>
               <h3>Steps</h3>
               <ol>
                 {steps.map((item, index) => (
-                  <li key={index}> {item.Nuskhasteps}</li>
+                  <li key={index}>{item.Nuskhasteps}</li>
                 ))}
               </ol>
-
               <h3>Usage</h3>
               <ol>
                 {usage.map((item, index) => (
-                  <li key={index}> {item.Nuskhausage}</li>
+                  <li key={index}>{item.Nuskhausage}</li>
                 ))}
               </ol>
             </Col>
@@ -109,22 +111,22 @@ const Remedy_Disciption = () => {
                   fontWeight: "bold",
                 }}
               >
-                Rating : <Rating rating={remedy.AverageRating} clickable={true} />
+                Rating: <Rating rating={remedy.AverageRating} clickable={false} showNumber={true} />
               </span>
             </Col>
             <Col md={2}>
               <div className="btn-pro">
-                <Button
+                {/* <Button
                   onClick={() => navigate("/Remedies/RemediesDetails")}
                   type="submit"
                 >
                   View Product
-                </Button>
+                </Button> */}
               </div>
             </Col>
           </Row>
           <Row
-            className="justify-content-md-center "
+            className="justify-content-md-center"
             style={{ marginTop: "20px" }}
           >
             <Col md={8}>
@@ -137,7 +139,11 @@ const Remedy_Disciption = () => {
                   />
                 </div>
                 <div className="qst-btn">
-                  <Button type="submit" className="question-btn" onClick={handleSubmitbtn}>
+                  <Button
+                    type="submit"
+                    className="question-btn"
+                    onClick={handleSubmitbtn}
+                  >
                     Submit
                   </Button>
                 </div>
@@ -145,9 +151,7 @@ const Remedy_Disciption = () => {
             </Col>
             <Col md={2}>
               <Button
-                onClick={() =>
-                  navigate("/Home/Remedy_Disciption/Comment_Reply")
-                }
+                onClick={() => navigate("/Home/Remedy_Disciption/Comment_Reply")}
                 type="Submit"
                 className="question-btn sub"
               >
@@ -155,14 +159,6 @@ const Remedy_Disciption = () => {
               </Button>
             </Col>
           </Row>
-          {/* <Row
-            className="justify-content-md-center "
-            style={{ marginTop: "20px" }}
-          >
-            <Col md={10}>
-              <h3>Comment & Reply</h3>
-            </Col>
-          </Row> */}
         </Container>
       </div>
     </div>

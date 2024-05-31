@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo_again from "../images/logo again.png";
 import Button from "react-bootstrap/Button";
@@ -13,6 +13,10 @@ const Login = ({ handleUserRole, sendName }) => {
   const [password, setPassword] = useState("");
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(eyeOff);
+
+  useEffect(()=>{
+    localStorage.setItem("Email",Email);
+  },[Email])
 
   const gotoSignup = () => {
     navigate("/Signup");
@@ -55,7 +59,7 @@ const Login = ({ handleUserRole, sendName }) => {
           }
           console.log(data);
         } else {
-          throw new Error("Invalid username or password");
+          throw new Error("Invalid Email or password");
         }
       })
       .catch((error) => {

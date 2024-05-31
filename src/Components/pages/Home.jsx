@@ -23,15 +23,18 @@ import Home_remedyCard from "../inc/Home_remedyCard";
 // import Nav2_forPatient from "../inc/Nav2_forPatient";
 import { useLocation, useNavigate } from "react-router-dom";
 
-function Home({ isPatient, selectedDisease }) {
+function Home({isPatient,  selectedDisease }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [remediesAgainstDisease, setremediesAgainstDisease] = useState([]);
+  // const [checkPatient,setCheckPatient] = useState(isPatient);
 
   // const [checkPat, setCheckPat] = useState(true);
 
   // const { response_Patient } = location.state || {};
   useEffect(() => {
+    console.log("Who is coming : ",isPatient);
+
     const fetchNuskhas = async () => {
       try {
         const ids = selectedDisease.map((item) => item.value);
@@ -86,11 +89,12 @@ function Home({ isPatient, selectedDisease }) {
   };
   return (
     <>
-      {
-        // checkPatient ?   (<Nav2_forPatient patientResponse={patient_coming} />) : ( <CustomeNav/>)
-      }
+      {/* {
+        checkPatient ?   (<Nav2_forPatient />) : ( <CustomeNav/>)
+      } */}
 
-      <CustomeNav isPatient={isPatient} />
+      {/* <CustomeNav  /> */}
+
       <div className="slider-container">
         <Carousel fade className="slider">
           <Carousel.Item>
