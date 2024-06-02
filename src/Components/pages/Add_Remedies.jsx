@@ -124,7 +124,7 @@ function Add_Remedies() {
   return (
     <>
       <CustomeNav />
-      <Custome_heading title="Add Remedies" />
+      <Custome_heading title="Add " />
       <div className="add-remedies-container">
         <form onSubmit={handleSubmit}>
           <div className="form-group">

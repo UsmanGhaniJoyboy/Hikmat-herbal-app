@@ -1,55 +1,66 @@
 .custome_card {
-  height: auto; /* Adjust height to auto for better responsiveness */
-  width: 100%; /* Use 100% width for better responsiveness */
-  max-width: 400px; /* Set a max-width to prevent it from growing too large */
-  border: 1px solid black;
+  /* width: calc(100% - 30px); */
+  min-width: 400px; /* Minimum width of 400px */
+  max-width: 100%; 
+  border: 1px solid #ccc;
   border-radius: 10px;
   display: flex;
-  flex-direction: column; /* Use column direction for better layout control */
-  justify-content: space-between;
+  flex-direction: row; /* Ensure cards stack vertically */
+  justify-content: space-evenly;
   background-color: bisque;
-  transition: background-color 0.5s ease, color 0.5s ease; 
-  /* background: linear-gradient(45deg,bisque,rgb(110, 75, 31)); */
+  transition: background-color 0.3s ease, color 0.3s ease;
   color: black;
-  flex-wrap: wrap;
-  margin: 10px auto; /* Center the card and add margin for spacing */
-  padding: 10px; /* Add padding for better spacing */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
-  position: relative;
+  /* margin: 10px auto; */
+  padding: 15px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Add margin-bottom to create space between cards */
 }
 
+
 .card_1 {
-  position: relative;
-  flex: 1; /* Allow the card body to grow and shrink as needed */
   display: flex;
-  flex-direction: column; /* Use column direction for better layout control */
+  flex-direction: column;
   justify-content: space-between;
+  flex: 1;
 }
 
 .card_btn {
   display: flex;
-  justify-content: space-around; /* Distribute space around the links */
-  margin-top: 10px; /* Add margin-top for spacing */
+  justify-content: space-around;
+  margin-top: 15px;
 }
 
 .card_rating {
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-top: 10px; /* Add margin-top for spacing */
+  margin-top: 10px;
+}
+
+.card_rating span {
+  margin-left: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .card_link {
-  color: #007bff; /* Change link color */
-  font-weight: bold; /* Make the text bold */
+  color: #007bff;
+  font-weight: bold;
   text-decoration: none;
 }
 
 .card_link:hover {
-  text-decoration: underline; /* Add underline on hover */
+  text-decoration: underline;
 }
 
-@media only screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .custome_card {
-      width: 100%; /* Ensure the card takes the full width on smaller screens */
+    width: 100%; /* Full width on smaller screens */
+    padding: 10px;
+  }
+
+  .card_rating span {
+    font-size: 1rem;
   }
 }

@@ -4,6 +4,7 @@ import Custome_heading from '../inc/Custome_heading';
 import { Alert } from 'react-bootstrap';
 import { useNavigate,useLocation } from "react-router-dom";
 import axios from 'axios';
+import { Input } from 'react-select/animated';
 
 const Steps = () => {
     const [steps , setSteps] = useState('');
@@ -39,6 +40,7 @@ const Steps = () => {
           const chekcStpes = responseAddSteps.data;
           setSteps(chekcStpes);
           console.log("steps id in Add Step page ", steps);
+          
           } 
         }
         catch(error){

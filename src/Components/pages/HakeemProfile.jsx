@@ -33,7 +33,7 @@ function HakeemProfile({sendName}) {
 
 
   const handleViewRemediesClick = () => {
-    navigate("/HakeemProfile/Hakeem_Remedies");
+    navigate("/HakeemProfile/Hakeem_Remedies",{state:{RemedyData :sendName}});
   };
   const handleSales = () => {
     navigate("/Hakeem_sale");
@@ -98,7 +98,7 @@ function HakeemProfile({sendName}) {
                 />
                 <Card.Body>
                   <Button onClick={handleViewRemediesClick} className="card_title" variant="primary">
-                    Your Remedies
+                    View Remedies
                   </Button>
                 </Card.Body>
               </Card>

@@ -1,48 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Link, Navigate } from "react-router-dom";
-import CustomeNav from "../inc/CustomeNav";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import Carousel from "react-bootstrap/Carousel";
 import slider1 from "../images/slider3.jpg";
 import slider2 from "../images/slider 4.jpg";
 import "../StyleSheets/home.css";
 import ThemeProvider from "react-bootstrap/ThemeProvider";
-// import "../StyleSheets/Login.css";
-import herbs from "../images/herbs.jpg";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import search from "../images/nounsearch.png";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import { FaStar } from "react-icons/fa";
-import filter from "../images/filter.png";
-// import Footer from "../inc/Footer";
 import Home_remedyCard from "../inc/Home_remedyCard";
 import Nav2_forPatient from "../inc/Nav2_forPatient";
-import { useLocation, useNavigate } from "react-router-dom";
+import CustomeNav from "../inc/CustomeNav";
 
-function Home({isPatient,  selectedDisease }) {
-  const location = useLocation();
+function Home({ isPatient, selectedDisease }) {
   const navigate = useNavigate();
   const [remediesAgainstDisease, setremediesAgainstDisease] = useState([]);
-  const [checkPatient,setCheckPatient] = useState(null);
+  const [checkPatient, setCheckPatient] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // const [checkPat, setCheckPat] = useState(true);
-
-  // const { response_Patient } = location.state || {};
   useEffect(() => {
-    console.log("Who is coming : ",isPatient.rol);
+    console.log("Who is coming : ", isPatient.rol);
     handleTheRole();
-    // if(isPatient.rol == "Patient"){
-    //   setCheckPatient(true);
-    //   return checkPatient;
-    // }
-    // else{
-    //   setCheckPatient(false);
-    //   return checkPatient;
-    // }
 
     const fetchNuskhas = async () => {
       try {
@@ -56,23 +36,20 @@ function Home({isPatient,  selectedDisease }) {
           const sortedData = response.data.sort(
             (a, b) => b.AverageRating - a.AverageRating
           );
-          setremediesAgainstDisease(response.data);
-          console.log("Nuskhas Fetched:", response.data);
+          setremediesAgainstDisease(sortedData);
+          console.log("Nuskhas Fetched:", sortedData);
         } else {
           console.log("No Nuskhas found");
         }
       } catch (error) {
         console.error("Error fetching Nuskhas:", error);
         if (error.response) {
-          // Server responded with a status other than 2xx
           console.error("Response data:", error.response.data);
           console.error("Response status:", error.response.status);
           console.error("Response headers:", error.response.headers);
         } else if (error.request) {
-          // Request was made but no response was received
           console.error("Request data:", error.request);
         } else {
-          // Something happened in setting up the request
           console.error("Error message:", error.message);
         }
       }
@@ -81,41 +58,32 @@ function Home({isPatient,  selectedDisease }) {
     fetchNuskhas();
   }, [selectedDisease]);
 
-  // const [checkPatient , setCheckPatient] = useState(false);
-
-  // useEffect(() => {
-  //   // Check if the default response is 'patient'
-  //   if (patient_coming === 'Patient') {
-  //     console.log(checkPatient)
-  //     setCheckPatient(true);
-
-  //   }
-  // }, [patient_coming]);
-
-  
-
   const handleSeeRemedyClick = (index) => {
     const selectedRemedy = remediesAgainstDisease[index];
-    navigate("/Home/Remedy_Disciption", { state: { remedy: selectedRemedy, patientComing : isPatient } });
-  }
+    navigate("/Home/Remedy_Disciption", {
+      state: { remedy: selectedRemedy, patientComing: isPatient },
+    });
+  };
 
-  const handleTheRole =()=>{
-    if(isPatient.rol == 'Patient'){
+  const handleTheRole = () => {
+    if (isPatient.rol === "Patient") {
       setCheckPatient(true);
-        return checkPatient;
-      }
-      else{
-        setCheckPatient(false);
-        return checkPatient;
-      }
+    } else {
+      setCheckPatient(false);
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredRemedies = remediesAgainstDisease.filter((remedy) =>
+    remedy.NuskhaName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
-      {
-        checkPatient ?   (<Nav2_forPatient />) : ( <CustomeNav/>)
-      }
-
-      {/* <CustomeNav  /> */}
+      {checkPatient ? <Nav2_forPatient /> : <CustomeNav />}
 
       <div className="slider-container">
         <Carousel fade className="slider">
@@ -134,25 +102,27 @@ function Home({isPatient,  selectedDisease }) {
           </Carousel.Item>
         </Carousel>
       </div>
+
       <ThemeProvider
         breakpoints={["xxxl", "xxl", "xl", "lg", "md", "sm", "xs", "xxs"]}
       >
         <Container>
-          <Row className="justify-con tent-md-center">
+          <Row className="justify-content-md-center">
             <Col md={12}>
               <div className="search-container">
                 <img src={search} alt="search icon" className="search-icon" />
-
                 <input
                   type="text"
                   placeholder="Search Remedies"
                   className="search-input"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
                 />
               </div>
             </Col>
           </Row>
           <Row md={12}>
-            {remediesAgainstDisease.map((remedy, index) => (
+            {filteredRemedies.map((remedy, index) => (
               <Col md={4} key={index}>
                 <Home_remedyCard
                   remedyName={remedy.NuskhaName}
@@ -163,8 +133,6 @@ function Home({isPatient,  selectedDisease }) {
                 />
               </Col>
             ))}
-
-            {/* </Link> */}
           </Row>
         </Container>
       </ThemeProvider>
@@ -172,4 +140,4 @@ function Home({isPatient,  selectedDisease }) {
   );
 }
 
-export default Home;  
+export default Home;

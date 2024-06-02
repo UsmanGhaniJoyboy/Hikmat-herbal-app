@@ -20,7 +20,9 @@ const Remedy_Disciption = () => {
   const [steps, setSteps] = useState([]);
   const [Ingredient, setIngredient] = useState([]);
   const [usage, setUsage] = useState([]);
-  const [checkRatingperson, setcheckRatingperson] = useState('');
+  const [comments, setComments] = useState("");
+  const [saveComments, setSaveComments] = useState([]);
+  const [checkRatingperson, setcheckRatingperson] = useState("");
   const [userRating, setUserRating] = useState(0);
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const Remedy_Disciption = () => {
     console.log("Nuskha id aginst selecting remedy", remedy.Nuskhaid);
     console.log("Patient id, where are you?", patientComing.id);
 
-    const fetchSteps = async () => {
+    const fetchData = async () => {
       try {
         const responseSteps = await axios.get(
           `http://localhost/Hakeemhikmat/api/Addnushka/GetSteps?Nuskaid=${remedy.Nuskhaid}`
@@ -41,21 +43,17 @@ const Remedy_Disciption = () => {
         );
         if (
           responseSteps.data &&
-          responseSteps.data &&
           responseIngredient.data &&
-          responseIngredient.data &&
-          responseUsages.data &&
-          responseUsages.data !== "NO DATA"
+          responseUsages.data
         ) {
           setSteps(responseSteps.data);
           setIngredient(responseIngredient.data);
           setUsage(responseUsages.data);
-          console.log(`steps are fetching ${steps}`);
-          console.log(`steps are fetching ${Ingredient}`);
-          console.log(`steps are fetching ${usage}`);
+        } else {
+          console.error("One or more responses did not return data.");
         }
       } catch (error) {
-        console.error("Error fetching Nuskhas:", { steps });
+        console.error("Error fetching data:", error);
         if (error.response) {
           console.error("Response data:", error.response.data);
           console.error("Response status:", error.response.status);
@@ -67,39 +65,84 @@ const Remedy_Disciption = () => {
         }
       }
     };
-    fetchSteps();
-  }, []);
+
+    const fetchComments = async () => {
+      try {
+        const responseComments = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetCommentOfNuskha?nid=${remedy.Nuskhaid}`
+        );
+        if (responseComments.data) {
+          setSaveComments(responseComments.data);
+        } else {
+          console.error("One or more responses did not return data.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+          console.error("Request data:", error.request);
+        } else {
+          console.error("Error message:", error.message);
+        }
+      }
+    };
+
+    fetchData();
+    fetchComments();
+  }, [remedy.Nuskhaid]);
+
+  useEffect(() => {
+    console.log("Fetched steps: ", steps);
+  }, [steps]);
+
+  useEffect(() => {
+    console.log("Fetched ingredients: ", Ingredient);
+  }, [Ingredient]);
+
+  useEffect(() => {
+    console.log("Fetched usages: ", usage);
+  }, [usage]);
+
+  useEffect(() => {
+    console.log("Fetched comments: ", saveComments);
+  }, [saveComments]);
 
   const handleRating = (rate) => {
     setUserRating(rate);
     console.log(`User rated: ${rate}`);
-    // You can also send the rating to the server here if needed
   };
 
-  const handleSubmitbtn = () => {
-    // Add your submit button logic here
-    const Submit_comments = async ()=>{
-      try{
-        const formData = new FormData();
+  const handleSubmitbtn = async () => {
+    try {
+      const formData = new FormData();
       formData.append("n_id", remedy.Nuskhaid);
       formData.append("u_id", patientComing.id);
+      formData.append("rating", userRating);
+      formData.append("comments", comments);
 
-        const responseSubmit = await axios.post(
-          "http://localhost/Hakeemhikmat/api/Addnushka/ratingcomments",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        )
-      }
-      catch(error){
-        
-      }
+      const responseSubmit = await axios.post(
+        "http://localhost/Hakeemhikmat/api/Addnushka/ratingcomments",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Nuskha data added successfully:", responseSubmit.data);
+
+      // Fetch comments again to update the list
+      const getUpdatedComments = await axios.get(
+        `http://localhost/Hakeemhikmat/api/Addnushka/GetCommentOfNuskha?nid=${remedy.Nuskhaid}`
+      );
+      setSaveComments(getUpdatedComments.data);
+    } catch (error) {
+      console.error("Error submitting data:", error);
     }
   };
-
 
   return (
     <div>
@@ -144,13 +187,19 @@ const Remedy_Disciption = () => {
                   fontWeight: "bold",
                 }}
               >
-                Rating: <Rating rating={remedy.AverageRating} clickable={false} showNumber={true} />
+                Rating:{" "}
+                <Rating
+                  rating={remedy.AverageRating}
+                  clickable={false}
+                  showNumber={true}
+                />
               </span>
             </Col>
-            {/* Give rating here */}
             <Col md={2}>
               <div className="rating_set">
-                <span style={{fontSize:'1.7rem',fontWeight:'bold'}}>Rate: </span>
+                <span style={{ fontSize: "1.7rem", fontWeight: "bold" }}>
+                  Rate:{" "}
+                </span>
                 <ClickableRating onRate={handleRating} />
               </div>
             </Col>
@@ -166,6 +215,8 @@ const Remedy_Disciption = () => {
                     type="text"
                     placeholder="Comment"
                     className="search-input"
+                    value={comments}
+                    onChange={(e) => setComments(e.target.value)}
                   />
                 </div>
                 <div className="qst-btn">
@@ -178,10 +229,22 @@ const Remedy_Disciption = () => {
                   </Button>
                 </div>
               </div>
+              <div className="comments-section">
+                <h3>Comments</h3>
+                <ol>
+                  {saveComments.map((comment, index) => (
+                    <li style={{ fontSize: "1.2rem" }} key={index}>
+                      <p>{comment.Comment}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </Col>
             <Col md={2}>
               <Button
-                onClick={() => navigate("/Home/Remedy_Disciption/Comment_Reply")}
+                onClick={() =>
+                  navigate("/Home/Remedy_Disciption/Comment_Reply")
+                }
                 type="Submit"
                 className="question-btn sub"
               >
