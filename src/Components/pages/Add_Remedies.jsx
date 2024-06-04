@@ -19,7 +19,8 @@ function Add_Remedies() {
   //for nuskha id
   const [nuskhaId, setNuskhaId] = useState("");
   const [remedyName, setRemedyName] = useState("");
-  
+  const [addDisease, setAddDisease] = useState("");
+
   //for publicand private
   const [Remedy_privacy, setRemedy_privacy] = useState("");
 
@@ -42,7 +43,7 @@ function Add_Remedies() {
                   id: disease.id,
                   label: disease.name,
                 }))
-              ); 
+              );
               // handleDisease(setDiseases);
               console.log(diseases);
             } else {
@@ -73,7 +74,7 @@ function Add_Remedies() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("h_id",  HakeemId.id);
+    formData.append("h_id", HakeemId.id);
     formData.append("name", remedyName);
     formData.append("publicity", Remedy_privacy);
 
@@ -114,14 +115,38 @@ function Add_Remedies() {
       // Handle success (e.g., navigate to next step, show success message)
     } catch (error) {
       console.error("Error submitting data:", error);
-      // Handle error (e.g., show error message)
+      // Handle error (e.g., show error message)a
     }
     // navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
-    navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
-
-    
+    navigate("/HakeemProfile/Add_Remedies/Add_ingredient", {
+      state: { Nuskha_Id: nuskhaid },
+    });
   };
 
+  const handleDisease = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", addDisease);
+
+    try {
+      // First API call to add the remedy and get the NuskhaId
+      const response = await axios.post(
+        "http://localhost/Hakeemhikmat/api/Addnushka/PostDisease",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Disease Added:", response.data.name);
+
+      // Handle success (e.g., navigate to next step, show success message)
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      // Handle error (e.g., show error message)a
+    }
+  };
 
   // Define options here
 
@@ -141,10 +166,25 @@ function Add_Remedies() {
                 console.log("Selected disease:", selectedOption);
               }}
             />
+            <br />
+            <div className="form-group">
+              <label htmlFor="remedyName">Add Disease(Optional):</label>
+              <input
+                type="text"
+                id="remedyName"
+                value={addDisease}
+                onChange={(e) => setAddDisease(e.target.value)}
+                placeholder="Add new Disease if not in Disease section"
+                required
+              />
+            </div>
+            <button onClick={handleDisease} type="submit">
+              Add Disease
+            </button>
 
             {/* <div>Disease Selected: {selectedDiseases}</div> */}
           </div>
-       
+
           <div className="form-group">
             <label htmlFor="remedyName">Name of Remedy:</label>
             <input
