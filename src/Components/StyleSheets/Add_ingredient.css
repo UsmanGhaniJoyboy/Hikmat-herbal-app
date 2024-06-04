@@ -9,6 +9,15 @@
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     font-weight: bold;
 }
+.editbtn{
+  width: 10%;
+  background-color: transparent;
+}
+.ingredient-cont{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
 
 .AddIngredient_form-group{
     margin-bottom: 2rem;
@@ -19,7 +28,7 @@ input[type='text'],
   input[type='number'],
   select {
     width: 100%;
-    padding: 5px;
+    padding: 2px;
     margin-bottom: 1.3rem;
     border: 1px solid #ccc;
     border-radius: 3px;
@@ -36,7 +45,48 @@ input[type='text'],
     cursor: pointer;
     font-weight: bold;
   }
-  button:hover {
-    background-color: rgb(7, 85, 85);
+  .ingredient-cont {
+    width: 100%;
   }
   
+  .AddIngredient_form-group {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    height: 30px; /* Adjust this height as needed */
+  }
+  
+  .form-control {
+    flex: 1;
+    width: 90%;
+    height: 100%;
+    margin-right: 10px; /* Adjust as needed */
+    padding: 2px; /* Adjust as needed */
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box; /* Ensures padding is included in the element's width and height */
+  }
+  .editbtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .edit-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    outline: none; /* Add this line */
+  }
+  .edit-icon {
+    width: 50px; /* Adjust as needed */
+    height: 50px; /* Adjust as needed */
+  }
+  
+  .edit-button:hover{
+    background-color: transparent;
+  }

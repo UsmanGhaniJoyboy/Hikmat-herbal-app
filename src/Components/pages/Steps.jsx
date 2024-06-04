@@ -5,6 +5,7 @@ import { Alert } from 'react-bootstrap';
 import { useNavigate,useLocation } from "react-router-dom";
 import axios from 'axios';
 import { Input } from 'react-select/animated';
+import "../StyleSheets/stepsStyle.css";
 
 const Steps = () => {
     const [steps , setSteps] = useState('');
@@ -40,6 +41,7 @@ const Steps = () => {
           const chekcStpes = responseAddSteps.data;
           setSteps(chekcStpes);
           console.log("steps id in Add Step page ", steps);
+          setSteps("");
           
           } 
         }
@@ -80,6 +82,7 @@ const Steps = () => {
         if (handleUsagesApi.data && handleUsagesApi.data !== "NO DATA") {
           const checkUsagesdata = handleUsagesApi.data;
           setUsages(checkUsagesdata);
+          setUsages("");
           console.log("usages data coming on Add steps page: ", usages);
         }
           
@@ -105,7 +108,7 @@ const Steps = () => {
         />
         <div className="add-Ing-container text-center"> {/* Apply the styling class */}
         <form>
-          <div className="AddIngredient_form-group">
+          <div className="Add_form-group">
             <input
               type="text"
               value={steps}

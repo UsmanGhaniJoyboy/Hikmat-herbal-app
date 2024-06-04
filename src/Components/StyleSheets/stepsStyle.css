@@ -1,0 +1,45 @@
+/* Existing styles */
+.AddSteps_form-group {
+    height: 30%;
+    width: 35%;
+    margin: auto;
+    margin-top: 2%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+  }
+  
+  /* New styles */
+  
+  /* Style the input fields */
+  .AddSteps_form-group .form-control {
+    margin-bottom: 1rem; /* Add some space between the inputs */
+    padding: 0.5rem; /* Make the inputs a bit taller */
+  }
+  
+  /* Style the buttons */
+  .AddSteps_form-group button {
+    background-color: #007bff; /* Make the buttons blue */
+    color: white; /* Make the button text white */
+    border: none; /* Remove the default button border */
+    padding: 0.5rem 1rem; /* Add some padding to the buttons */
+    cursor: pointer; /* Change the cursor when hovering over the buttons */
+  }
+  
+  /* Change the button color when hovering */
+  /* .AddSteps_form-group button:hover {
+    background-color: #0056b3;
+  } */
+  
+  /* Style the 'done' button */
+  /* .done_btn {
+    background-color: #28a745; /* Make the 'done' button green */
+  
+  
+  /* Change the 'done' button color when hovering */
+  /* .done_btn:hover {
+    background-color: #1e7e34;
+  } */
+  

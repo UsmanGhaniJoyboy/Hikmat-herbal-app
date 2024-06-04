@@ -35,3 +35,7 @@
     background-color: white;
     border-radius: 4px;
 }
+.logout-nav-link{
+    background-color: black;
+    color: white;
+}

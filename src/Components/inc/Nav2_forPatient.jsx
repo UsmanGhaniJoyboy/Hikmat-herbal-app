@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../images/logo again.png";
+import logout from "../images/logout.png";
 
 const Nav2_forPatient = ({patientResponse}) => {
   return (
@@ -33,9 +34,9 @@ const Nav2_forPatient = ({patientResponse}) => {
               {/* <NavLink title="Remedies" to= '/Remedies' className="nav-link">
                 Remedies
               </NavLink> */}
-              {/* <NavLink title="About" to="/About" className="nav-link ">
-                About
-              </NavLink> */}
+              <NavLink title="Logout" to="/" className="logout-link ">
+                <img style={{width:'30px',height:'30px'}} src={logout} alt="logout" />
+              </NavLink>
             </Nav>
           </Navbar.Collapse>
         </Container>
