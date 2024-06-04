@@ -8,15 +8,14 @@ import axios from "axios";
 const Signup = () => {
   const navigate = useNavigate();
 
-  const [name, setname] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [rol, setRole] = useState(""); // Default rol is patient
   const [emailError, setEmailError] = useState("");
-
   const [error, setError] = useState("");
-  
+
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
@@ -27,7 +26,6 @@ const Signup = () => {
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
-      console.log(error);
       return;
     }
     if (!validateEmail(email)) {
@@ -36,25 +34,29 @@ const Signup = () => {
     }
 
     try {
+      const userData = {
+        name,
+        email,
+        password,
+        rol,
+      };
+      console.log("Sending user data:", userData); // Log the user data being sent
+
       const response = await axios.post(
         "http://localhost/Hakeemhikmat/api/Users/Signup",
-        {
-          name,
-          email,
-          password,
-          rol,
-        }
+        userData
       );
+
+      console.log("API response:", response.data);
 
       if (response.data === "data entered") {
         // Redirect or perform any action upon successful signup
-        console.log({ name, email, password, rol });
-        console.log(response.data);
-        alert("Registration Completed")
+        alert("Registration Completed");
         navigate("/");
-      } else {
+      } else if (response.data === "email is in use") {
         setError("Email is already in use");
-        console.log(error);
+      } else {
+        setError("An error occurred while signing up");
       }
     } catch (error) {
       setError("An error occurred while signing up");
@@ -93,7 +95,7 @@ const Signup = () => {
             type="text"
             id="name"
             value={name}
-            onChange={(e) => setname(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
@@ -132,7 +134,7 @@ const Signup = () => {
           <label>
             <input
               type="radio"
-              value="patient"
+              value="Patient"
               checked={rol === "Patient"}
               onChange={() => setRole("Patient")}
             />
@@ -141,7 +143,7 @@ const Signup = () => {
           <label>
             <input
               type="radio"
-              value="hakeem"
+              value="Hakeem"
               checked={rol === "Hakeem"}
               onChange={() => setRole("Hakeem")}
             />
@@ -149,9 +151,8 @@ const Signup = () => {
           </label>
         </div>
         {emailError && <p className="error">{emailError}</p>}
-        <button onClick={handleSubmit} type="submit">
-          Sign Up
-        </button>
+        {error && <p className="error">{error}</p>}
+        <button type="submit">Sign Up</button>
       </form>
       <p>
         Already have an account? <Link to="/">Login</Link>

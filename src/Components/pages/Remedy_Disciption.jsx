@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import Rating from "../inc/Rating";
 import ClickableRating from "../inc/ClickableRating";
+import Nav2_forPatient from "../inc/Nav2_forPatient";
 
 const Remedy_Disciption = () => {
   const navigate = useNavigate();
@@ -24,11 +25,13 @@ const Remedy_Disciption = () => {
   const [saveComments, setSaveComments] = useState([]);
   const [checkRatingperson, setcheckRatingperson] = useState("");
   const [userRating, setUserRating] = useState(0);
+  const [HakeemRate, setHakeemRate] = useState(0);
 
   useEffect(() => {
     console.log(remedy);
     console.log("Nuskha id aginst selecting remedy", remedy.Nuskhaid);
     console.log("Patient id, where are you?", patientComing.id);
+    console.log("Hakeem id, where are you?", remedy.Hakeemid);
 
     const fetchData = async () => {
       try {
@@ -92,7 +95,7 @@ const Remedy_Disciption = () => {
 
     fetchData();
     fetchComments();
-  }, [remedy.Nuskhaid]);
+  }, [remedy.Nuskhaid],[remedy.Hakeemid]);
 
   useEffect(() => {
     console.log("Fetched steps: ", steps);
@@ -115,6 +118,11 @@ const Remedy_Disciption = () => {
     console.log(`User rated: ${rate}`);
   };
 
+  const handleHakeemRate = (rate) => {
+    setHakeemRate(rate);
+    console.log(`Hakeem rated: ${rate}`);
+  };
+
   const handleSubmitbtn = async () => {
     try {
       const formData = new FormData();
@@ -122,6 +130,15 @@ const Remedy_Disciption = () => {
       formData.append("u_id", patientComing.id);
       formData.append("rating", userRating);
       formData.append("comments", comments);
+
+      const formData2 = new FormData();
+      formData2.append("u_id", patientComing.id);
+      formData2.append("h_id",remedy.Hakeemid);
+      formData2.append("rating", HakeemRate);
+
+      console.log("Hakeem Rating Formdata Patien id",patientComing.id)
+      console.log("Hakeem Rating Formdata Hakeem Id",remedy.Hakeemid)
+      console.log("Hakeem Rating Formdata Hakeem Rating",HakeemRate)
 
       const responseSubmit = await axios.post(
         "http://localhost/Hakeemhikmat/api/Addnushka/ratingcomments",
@@ -139,14 +156,30 @@ const Remedy_Disciption = () => {
         `http://localhost/Hakeemhikmat/api/Addnushka/GetCommentOfNuskha?nid=${remedy.Nuskhaid}`
       );
       setSaveComments(getUpdatedComments.data);
+
+     
+      const responseHakeemRating = await axios.post(
+        "http://localhost/Hakeemhikmat/api/Addnushka/HakeemRating",
+        formData2,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Rating Added for Hakeem:", responseHakeemRating.data);
+
     } catch (error) {
       console.error("Error submitting data:", error);
     }
   };
 
+ 
+
   return (
     <div>
-      <CustomeNav />
+      {/* <CustomeNav /> */}
+      <Nav2_forPatient />
       <Custome_heading title={remedy.NuskhaName} />
       <div className="rem-container">
         <Container fluid="md" className="inner-cont">
@@ -241,7 +274,7 @@ const Remedy_Disciption = () => {
               </div>
             </Col>
             <Col md={2}>
-              <Button
+              {/* <Button
                 onClick={() =>
                   navigate("/Home/Remedy_Disciption/Comment_Reply")
                 }
@@ -249,7 +282,11 @@ const Remedy_Disciption = () => {
                 className="question-btn sub"
               >
                 Comment & Reply
-              </Button>
+              </Button> */}
+              <span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+                Rate Hakeem:{" "}
+              </span>
+              <ClickableRating onRate={handleHakeemRate} />
             </Col>
           </Row>
         </Container>

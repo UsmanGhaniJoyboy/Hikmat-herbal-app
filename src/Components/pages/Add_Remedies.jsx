@@ -19,6 +19,7 @@ function Add_Remedies() {
   //for nuskha id
   const [nuskhaId, setNuskhaId] = useState("");
   const [remedyName, setRemedyName] = useState("");
+  
   //for publicand private
   const [Remedy_privacy, setRemedy_privacy] = useState("");
 
@@ -70,54 +71,57 @@ function Add_Remedies() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("h_id",  HakeemId.id);
-    formData.append("name", remedyName);
-    formData.append("publicity", Remedy_privacy);
+    // e.preventDefault();
+    // const formData = new FormData();
+    // formData.append("h_id",  HakeemId.id);
+    // formData.append("name", remedyName);
+    // formData.append("publicity", Remedy_privacy);
 
-    try {
-      // First API call to add the remedy and get the NuskhaId
-      const response = await axios.post(
-        "http://localhost/Hakeemhikmat/api/Addnushka/AddRemedy",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+    // try {
+    //   // First API call to add the remedy and get the NuskhaId
+    //   const response = await axios.post(
+    //     "http://localhost/Hakeemhikmat/api/Addnushka/AddRemedy",
+    //     formData,
+    //     {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     }
+    //   );
 
-      var nuskhaid = response.data;
-      // setNuskhaId(nuskhaid);
-      console.log("Data submitted successfully:", nuskhaid);
+    //   var nuskhaid = response.data;
+    //   // setNuskhaId(nuskhaid);
+    //   console.log("Data submitted successfully:", nuskhaid);
 
-      // Prepare form data for the second API call
-      const formData2 = new FormData();
-      formData2.append("n_id", nuskhaid);
-      formData2.append("d_id", selectedDisease.id);
+    //   // Prepare form data for the second API call
+    //   const formData2 = new FormData();
+    //   formData2.append("n_id", nuskhaid);
+    //   formData2.append("d_id", selectedDisease.id);
 
-      // Second API call to add the nuskha data against the disease
-      const responseDisaseNuskha = await axios.post(
-        "http://localhost/Hakeemhikmat/api/Addnushka/AddNushkaData",
-        formData2,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+    //   // Second API call to add the nuskha data against the disease
+    //   const responseDisaseNuskha = await axios.post(
+    //     "http://localhost/Hakeemhikmat/api/Addnushka/AddNushkaData",
+    //     formData2,
+    //     {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     }
+    //   );
 
-      console.log("Nuskha data added successfully:", responseDisaseNuskha.data);
+    //   console.log("Nuskha data added successfully:", responseDisaseNuskha.data);
 
-      // Handle success (e.g., navigate to next step, show success message)
-    } catch (error) {
-      console.error("Error submitting data:", error);
-      // Handle error (e.g., show error message)
-    }
+    //   // Handle success (e.g., navigate to next step, show success message)
+    // } catch (error) {
+    //   console.error("Error submitting data:", error);
+    //   // Handle error (e.g., show error message)
+    // }
     // navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
-    navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
+    navigate("/HakeemProfile/Add_Remedies/Add_ingredient");
+
+    // ,{state:{Nuskha_Id:nuskhaid}}
   };
+
 
   // Define options here
 
@@ -140,7 +144,7 @@ function Add_Remedies() {
 
             {/* <div>Disease Selected: {selectedDiseases}</div> */}
           </div>
-
+       
           <div className="form-group">
             <label htmlFor="remedyName">Name of Remedy:</label>
             <input

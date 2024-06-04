@@ -29,7 +29,7 @@ function CustomeNav({ isPatient }) {
           <Navbar.Brand className="text-white" style={{ fontWeight: "bold" }}>
             <Link
               title="Home"
-              to="/Home"
+              // to="/Home"
               style={{ textDecoration: "none", color: "white" }}
             >
               <img src={logo} alt="oops" className="logo" />
@@ -43,16 +43,16 @@ function CustomeNav({ isPatient }) {
               {/* <NavLink title="Remedies" to="/Remedies" className="nav-link">
                 Remedies
               </NavLink> */}
-              <NavLink title="About" to="/About" className="nav-link ">
+              {/* <NavLink title="About" to="/About" className="nav-link ">
                 About
-              </NavLink>
-              <NavLink title="Cart" to="/Cart" className="nav-link ">
+              </NavLink> */}
+              {/* <NavLink title="Cart" to="/Cart" className="nav-link ">
                 Cart
-              </NavLink>
+              </NavLink> */}
               {/* <NavLink title="Show">
                 {name}
               </NavLink> */}
-              {checkRole ? null : (
+              {/* {checkRole ? null : ( */}
                 <NavLink
                   title="Profile"
                   to="/HakeemProfile"
@@ -60,7 +60,7 @@ function CustomeNav({ isPatient }) {
                 >
                   <img src={H_Profile} alt="oops" className="profile" />
                 </NavLink>
-              ) }
+              {/* ) } */}
               {/* <NavLink
                 title="Profile"
                 to="/HakeemProfile"

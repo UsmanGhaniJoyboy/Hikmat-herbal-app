@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 
-const ClickableRating = ({ onRate }) => {
+const   ClickableRating = ({ onRate }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 

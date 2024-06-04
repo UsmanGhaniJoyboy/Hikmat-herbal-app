@@ -30,15 +30,12 @@ const Nav2_forPatient = ({patientResponse}) => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ms-auto">
-              <NavLink title="Remedies" to= '/Remedies' className="nav-link">
+              {/* <NavLink title="Remedies" to= '/Remedies' className="nav-link">
                 Remedies
-              </NavLink>
-              <NavLink title="About" to="/About" className="nav-link ">
+              </NavLink> */}
+              {/* <NavLink title="About" to="/About" className="nav-link ">
                 About
-              </NavLink>
-              <NavLink title="Cart" to="/Cart" className="nav-link ">
-                Cart
-              </NavLink>
+              </NavLink> */}
             </Nav>
           </Navbar.Collapse>
         </Container>

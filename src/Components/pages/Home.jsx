@@ -108,7 +108,7 @@ function Home({ isPatient, selectedDisease }) {
       >
         <Container>
           <Row className="justify-content-md-center">
-            <Col md={12}>
+            <Col md={8}>
               <div className="search-container">
                 <img src={search} alt="search icon" className="search-icon" />
                 <input
@@ -120,6 +120,9 @@ function Home({ isPatient, selectedDisease }) {
                 />
               </div>
             </Col>
+            {/* <Col md={2}>
+              <button style={{marginTop:'30px'}}>Logout</button>
+            </Col> */}
           </Row>
           <Row md={12}>
             {filteredRemedies.map((remedy, index) => (

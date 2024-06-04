@@ -17,32 +17,39 @@ import acidity from "../images/acitiy.png";
 import filter from "../images/filter.png";
 import Home_remedyCard from "../inc/Home_remedyCard";
 import Nav2_forPatient from "../inc/Nav2_forPatient";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
-function Remedies() {
+function Remedies({sendName}) {
   // const location = useLocation();
   // Extract response from location state
   // const response = location.state?.response || null;
   const navigate = useNavigate();
-  
+  const [checkPatient, setCheckPatient] = useState(null);
     // const { response_Patient } = location.state || {};
    
   // const [checkP,setCheckP] =useState(false);
 
-  // useEffect(() => {
-  //   // Check if the default response is 'patient'
-  //   if (response === 'Patient') {
-  //     setCheckP(true);
+  useEffect(() => {
+    handleTheRole();
+  }, [sendName]);
 
-  //   }
-  // }, [response]);
+  const handleTheRole = () => {
+    if (sendName.rol === "Patient") {
+      setCheckPatient(true);
+    } else {
+      setCheckPatient(false);
+    }
+  };
 
   const gotoRemediesDetail = () => {
     navigate("/Remedies/RemediesDetails");
   };
   return (
     <>
-      <CustomeNav />
+      {/* <CustomeNav /> */}
+
+      {checkPatient ? <CustomeNav />: <Nav2_forPatient /> }
+
 
       <Container>
         <Row className="justify-content-md-center">

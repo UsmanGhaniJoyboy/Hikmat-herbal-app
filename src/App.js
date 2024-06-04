@@ -85,8 +85,8 @@ function App() {
             <Route path="/HakeemProfile" element={<HakeemProfile sendName={name} />} />
             
             
-            <Route path="/Remedies" element={<Remedies/>} />
-            <Route path="/About" element={<About />} />
+            <Route path="/Remedies" element={<Remedies sendName={name}/>} />
+            <Route path="/About" element={<About handleUserRole={handleUserRole} />} />
             <Route path="/Cart" element={<Cart />} />
             <Route path="/HakeemProfile/Add_Remedies" element={<Add_Remedies />} />
             <Route path="/Hakeem_Sale" element={<Hakeem_sale />} />
