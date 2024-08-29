@@ -16,12 +16,12 @@ import CustomeNav from "../inc/CustomeNav";
 
 function Home({ isPatient, selectedDisease }) {
   const navigate = useNavigate();
-  const [remediesAgainstDisease, setremediesAgainstDisease] = useState([]);
+  const [remediesAgainstDisease, setRemediesAgainstDisease] = useState([]);
   const [checkPatient, setCheckPatient] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    console.log("Who is coming : ", isPatient.rol);
+    console.log("Who is coming: ", isPatient.rol);
     handleTheRole();
 
     const fetchNuskhas = async () => {
@@ -36,7 +36,7 @@ function Home({ isPatient, selectedDisease }) {
           const sortedData = response.data.sort(
             (a, b) => b.AverageRating - a.AverageRating
           );
-          setremediesAgainstDisease(sortedData);
+          setRemediesAgainstDisease(sortedData);
           console.log("Nuskhas Fetched:", sortedData);
         } else {
           console.log("No Nuskhas found");
@@ -90,14 +90,14 @@ function Home({ isPatient, selectedDisease }) {
           <Carousel.Item>
             <img src={slider2} alt="" className="slider_img" />
             <Carousel.Caption>
-              <h3 className="caption">Plantian Seeds </h3>
+              <h3 className="caption">Plantain Seeds</h3>
             </Carousel.Caption>
           </Carousel.Item>
 
           <Carousel.Item>
             <img src={slider1} alt="" className="slider_img" />
             <Carousel.Caption>
-              <h3 className="caption">Skincare lotion</h3>
+              <h3 className="caption">Skincare Lotion</h3>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
@@ -120,9 +120,6 @@ function Home({ isPatient, selectedDisease }) {
                 />
               </div>
             </Col>
-            {/* <Col md={2}>
-              <button style={{marginTop:'30px'}}>Logout</button>
-            </Col> */}
           </Row>
           <Row md={12}>
             {filteredRemedies.map((remedy, index) => (

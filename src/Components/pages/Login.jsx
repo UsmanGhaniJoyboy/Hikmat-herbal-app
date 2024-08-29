@@ -14,9 +14,7 @@ const Login = ({ handleUserRole, sendName }) => {
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(eyeOff);
 
-  useEffect(()=>{
-    localStorage.setItem("Email",Email);
-  },[Email])
+
 
   const gotoSignup = () => {
     navigate("/Signup");

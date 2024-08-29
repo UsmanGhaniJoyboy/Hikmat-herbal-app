@@ -8,13 +8,13 @@ import H_Profile from "../images/profile.png";
 import "../inc/nav.css";
 import logout from "../images/logout.png";
 
-function CustomeNav({ isPatient }) {
+function CustomeNav() {
   const [checkRole, setCheckRol] = useState(null);
   useEffect(() => {
-    if (isPatient === "Patient") {
-      setCheckRol(true);
-      console.log(isPatient);
-    }
+    // if (isPatient === "Patient") {
+    //   setCheckRol(true);
+    //   console.log(isPatient);
+    // }
   });
 
   return (

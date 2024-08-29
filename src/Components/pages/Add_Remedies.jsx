@@ -120,6 +120,7 @@ function Add_Remedies() {
     // navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
     navigate("/HakeemProfile/Add_Remedies/Add_ingredient", {
       state: { Nuskha_Id: nuskhaid },
+      
     });
   };
 

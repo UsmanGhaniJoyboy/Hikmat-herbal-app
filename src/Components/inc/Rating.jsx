@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaStar, FaRegStar, FaStarHalf } from "react-icons/fa";
 
-const Rating = ({ rating, clickable = false, showNumber = false }) => {
+const Rating = ({ rating, clickable = false, showNumber = false, totalUserRated = 0, showTotalUsers = false }) => {
   const [hovered, setHovered] = useState(false);
   const [clickedRating, setClickedRating] = useState(rating || 0);
 
@@ -14,25 +14,16 @@ const Rating = ({ rating, clickable = false, showNumber = false }) => {
     let star;
 
     if (starNumber <= clickedRating) {
-      star = <FaStar size={20} color="#ffc107" style={{ marginRight: 2 }} />;
+      star = <FaStar key={index} size={20} color="#ffc107" style={{ marginRight: 2 }} />;
     } else if (starNumber - clickedRating < 1 && starNumber - clickedRating > 0) {
-      star = <FaStarHalf size={20} color="#ffc107" style={{ marginRight: 2 }} />;
+      star = <FaStarHalf key={index} size={20} color="#ffc107" style={{ marginRight: 2 }} />;
     } else {
-      star = <FaRegStar size={20} color="#e4e5e9" style={{ marginRight: 2 }} />;
+      star = <FaRegStar key={index} size={20} color="#e4e5e9" style={{ marginRight: 2 }} />;
     }
 
     return (
       <span
         key={index}
-        onMouseEnter={() => clickable && setHovered(true)}
-        onMouseLeave={() => clickable && setHovered(false)}
-        onClick={() => {
-          if (clickable) {
-            const newRating = starNumber;
-            setClickedRating(newRating);
-            console.log(`Rating: ${newRating}`);
-          }
-        }}
         style={{ position: "relative", cursor: clickable ? "pointer" : "default" }}
       >
         {star}
@@ -50,6 +41,11 @@ const Rating = ({ rating, clickable = false, showNumber = false }) => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {stars}
       </div>
+      {showTotalUsers && totalUserRated > 0 && (
+        <div style={{ textAlign: 'center', fontSize: '1rem', fontWeight: 'bold', marginTop: '5px' }}>
+          {totalUserRated} Ratings
+        </div>
+      )}
     </div>
   );
 };

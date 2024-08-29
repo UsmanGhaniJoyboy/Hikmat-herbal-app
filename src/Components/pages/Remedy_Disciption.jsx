@@ -23,83 +23,82 @@ const Remedy_Disciption = () => {
   const [usage, setUsage] = useState([]);
   const [comments, setComments] = useState("");
   const [saveComments, setSaveComments] = useState([]);
-  const [checkRatingperson, setcheckRatingperson] = useState("");
   const [userRating, setUserRating] = useState(0);
-  const [HakeemRate, setHakeemRate] = useState(0);
+  const [averageRating, setAverageRating] = useState(remedy.AverageRating);
+  const [totaluserRating, setTotaluserRating] = useState("");
 
-  useEffect(
-    () => {
-      console.log(remedy);
-      console.log("Nuskha id aginst selecting remedy", remedy.Nuskhaid);
-      console.log("Patient id, where are you?", patientComing.id);
-      console.log("Hakeem id, where are you?", remedy.Hakeemid);
+  useEffect(() => {
+    console.log(remedy);
+    console.log("Nuskha id aginst selecting remedy", remedy.Nuskhaid);
+    console.log("Patient id, where are you?", patientComing.id);
+    console.log("Hakeem id, where are you?", remedy.Hakeemid);
+   
 
-      const fetchData = async () => {
-        try {
-          const responseSteps = await axios.get(
-            `http://localhost/Hakeemhikmat/api/Addnushka/GetSteps?Nuskaid=${remedy.Nuskhaid}`
-          );
-          const responseIngredient = await axios.get(
-            `http://localhost/Hakeemhikmat/api/Addnushka/GetIngredients?Nuskaid=${remedy.Nuskhaid}`
-          );
-          const responseUsages = await axios.get(
-            `http://localhost/Hakeemhikmat/api/Addnushka/Getusage?Nuskaid=${remedy.Nuskhaid}`
-          );
-          if (
-            responseSteps.data &&
-            responseIngredient.data &&
-            responseUsages.data
-          ) {
-            setSteps(responseSteps.data);
-            setIngredient(responseIngredient.data);
-            setUsage(responseUsages.data);
-          } else {
-            console.error("One or more responses did not return data.");
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          if (error.response) {
-            console.error("Response data:", error.response.data);
-            console.error("Response status:", error.response.status);
-            console.error("Response headers:", error.response.headers);
-          } else if (error.request) {
-            console.error("Request data:", error.request);
-          } else {
-            console.error("Error message:", error.message);
-          }
+    console.log("user rating", remedy.TotalUserRated);
+
+    const fetchData = async () => {
+      try {
+        const responseSteps = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetSteps?Nuskaid=${remedy.Nuskhaid}`
+        );
+        const responseIngredient = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetIngredients?Nuskaid=${remedy.Nuskhaid}`
+        );
+        const responseUsages = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/Getusage?Nuskaid=${remedy.Nuskhaid}`
+        );
+        if (
+          responseSteps.data &&
+          responseIngredient.data &&
+          responseUsages.data
+        ) {
+          setSteps(responseSteps.data);
+          setIngredient(responseIngredient.data);
+          setUsage(responseUsages.data);
+        } else {
+          console.error("One or more responses did not return data.");
         }
-      };
-
-      const fetchComments = async () => {
-        try {
-          const responseComments = await axios.get(
-            `http://localhost/Hakeemhikmat/api/Addnushka/GetCommentOfNuskha?nid=${remedy.Nuskhaid}`
-          );
-          if (responseComments.data) {
-            setSaveComments(responseComments.data);
-          } else {
-            console.error("One or more responses did not return data.");
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
-          if (error.response) {
-            console.error("Response data:", error.response.data);
-            console.error("Response status:", error.response.status);
-            console.error("Response headers:", error.response.headers);
-          } else if (error.request) {
-            console.error("Request data:", error.request);
-          } else {
-            console.error("Error message:", error.message);
-          }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+          console.error("Request data:", error.request);
+        } else {
+          console.error("Error message:", error.message);
         }
-      };
+      }
+    };
 
-      fetchData();
-      fetchComments();
-    },
-    [remedy.Nuskhaid],
-    [remedy.Hakeemid]
-  );
+    const fetchComments = async () => {
+      try {
+        const responseComments = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetCommentOfNuskha?nid=${remedy.Nuskhaid}`
+        );
+        if (responseComments.data) {
+          setSaveComments(responseComments.data);
+        } else {
+          console.error("One or more responses did not return data.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else if (error.request) {
+          console.error("Request data:", error.request);
+        } else {
+          console.error("Error message:", error.message);
+        }
+      }
+    };
+
+    fetchData();
+    fetchComments();
+  }, [remedy.Nuskhaid, remedy.Hakeemid,remedy.TotalUserRated]);
 
   useEffect(() => {
     console.log("Fetched steps: ", steps);
@@ -122,7 +121,6 @@ const Remedy_Disciption = () => {
     console.log(`User rated: ${rate}`);
   };
 
-
   const handleSubmitbtn = async () => {
     try {
       const formData = new FormData();
@@ -130,15 +128,6 @@ const Remedy_Disciption = () => {
       formData.append("u_id", patientComing.id);
       formData.append("rating", userRating);
       formData.append("comments", comments);
-
-      // const formData2 = new FormData();
-      // formData2.append("u_id", patientComing.id);
-      // formData2.append("h_id",remedy.Hakeemid);
-      // formData2.append("rating", HakeemRate);
-
-      console.log("Hakeem Rating Formdata Patien id", patientComing.id);
-      console.log("Hakeem Rating Formdata Hakeem Id", remedy.Hakeemid);
-      // console.log("Hakeem Rating Formdata Hakeem Rating",HakeemRate)
 
       const responseSubmit = await axios.post(
         "http://localhost/Hakeemhikmat/api/Addnushka/ratingcomments",
@@ -155,18 +144,14 @@ const Remedy_Disciption = () => {
       const getUpdatedComments = await axios.get(
         `http://localhost/Hakeemhikmat/api/Addnushka/GetCommentOfNuskha?nid=${remedy.Nuskhaid}`
       );
-      // setSaveComments([responseSubmit.data, ...saveComments]);
+      setSaveComments(getUpdatedComments.data);
+      setComments("");
 
-      // const responseHakeemRating = await axios.post(
-      //   "http://localhost/Hakeemhikmat/api/Addnushka/HakeemRating",
-      //   formData2,
-      //   {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   }
-      // );
-      // console.log("Rating Added for Hakeem:", responseHakeemRating.data);
+      // Fetch updated average rating
+      const responseAverageRating = await axios.get(
+        `http://localhost/Hakeemhikmat/api/Addnushka/GetAverageRating?Nuskaid=${remedy.Nuskhaid}`
+      );
+      setAverageRating(responseAverageRating.data);
     } catch (error) {
       console.error("Error submitting data:", error);
     }
@@ -174,7 +159,6 @@ const Remedy_Disciption = () => {
 
   return (
     <div>
-      {/* <CustomeNav /> */}
       <Nav2_forPatient />
       <Custome_heading title={remedy.NuskhaName} />
       <div className="rem-container">
@@ -216,11 +200,12 @@ const Remedy_Disciption = () => {
                   fontWeight: "bold",
                 }}
               >
-                Rating:{" "}
+                Average Rating:{" "}
                 <Rating
-                  rating={remedy.AverageRating}
+                  rating={averageRating}
                   clickable={false}
                   showNumber={true}
+                  // userRating ={remedy.TotalUserRated}
                 />
               </span>
             </Col>
@@ -269,21 +254,7 @@ const Remedy_Disciption = () => {
                 </ol>
               </div>
             </Col>
-            <Col md={2}>
-              {/* <Button
-                onClick={() =>
-                  navigate("/Home/Remedy_Disciption/Comment_Reply")
-                }
-                type="Submit"
-                className="question-btn sub"
-              >
-                Comment & Reply
-              </Button> */}
-              {/* <span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
-                Rate Hakeem:{" "}
-              </span>
-              <ClickableRating onRate={handleHakeemRate} /> */}
-            </Col>
+            <Col md={2}></Col>
           </Row>
         </Container>
       </div>

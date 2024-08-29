@@ -4,6 +4,7 @@ import "../StyleSheets/Signup.css";
 import logo_again from "../images/logo again.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Direct import
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -12,9 +13,11 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [rol, setRole] = useState(""); // Default rol is patient
+  const [rol, setRole] = useState(""); // Default role is patient
   const [emailError, setEmailError] = useState("");
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -111,23 +114,49 @@ const Signup = () => {
         </div>
         <div className="input-container">
           <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            {showPassword ? (
+              <FaEyeSlash
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle-icon"
+              />
+            ) : (
+              <FaEye
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle-icon"
+              />
+            )}
+          </div>
         </div>
         <div className="input-container">
           <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
+          <div className="password-container">
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            {showConfirmPassword ? (
+              <FaEyeSlash
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="password-toggle-icon"
+              />
+            ) : (
+              <FaEye
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="password-toggle-icon"
+              />
+            )}
+          </div>
         </div>
         <div className="input-container radio">
           <label style={{ fontSize: "1.3rem" }}>Role:</label>

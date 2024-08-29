@@ -1,46 +1,37 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "react-bootstrap/Card";
 import "../inc/HomeRemedy.css";
 import Rating from "./Rating";
 import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
 
 const Home_remedyCard = ({
   remedyName,
   hakeemName,
   rating,
   onClick,
-  nuskhaId,
   diseaseName,
 }) => {
-  useEffect(()=>{
-    console.log(``)
-  })
-
-  const navigate = useNavigate();
-
-  return (  
+  return (
     <Card className="mb-3 home_card">
       <Card.Body>
         <Card.Title className="rem-name">
-          Remedy Name :{" "}
+          Remedy Name:{" "}
           <span style={{ fontWeight: "normal", fontSize: "1.2rem" }}>
             {remedyName}
           </span>
         </Card.Title>
         <Card.Title className="hakeem-name">
-          Disease :{" "}
+          Disease:{" "}
           <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
             {diseaseName}
-          </span>{" "}
+          </span>
         </Card.Title>
         <Card.Title className="hakeem-name">
           Prescribed by:{" "}
           <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
             {hakeemName}
-          </span>{" "}
+          </span>
         </Card.Title>
-        {/* <Card.Text>Rating : <span style={{fontWeight:'normal',fontSize:"1rem"}}>{rating}</span></Card.Text> */}
         <Rating rating={rating} />
         <Button
           style={{ backgroundColor: "#2195ed", marginTop: "10px" }}

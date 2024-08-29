@@ -26,9 +26,9 @@ const Remedy_card = ({
             <Show_Rating rating={parseFloat(ratingValue)} />
           </div>
           <div className="card_btn">
-            <Link className="card_link" onClick={handleIncrementComment}>
+            {/* <Link className="card_link" onClick={handleIncrementComment}>
               {`${Comment} (${commentCount})`}
-            </Link>
+            </Link> */}
           </div>
         </Card.Body>
       </Card>
