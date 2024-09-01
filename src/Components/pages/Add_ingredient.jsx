@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import CustomeNav from "../inc/CustomeNav";
 import Custome_heading from "../inc/Custome_heading";
-import "../StyleSheets/Add_ingredient.css"; // Make sure to import the CSS file
+import "../StyleSheets/Add_ingredient.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
@@ -24,6 +24,13 @@ const Add_ingredient = () => {
   }, [Nuskha_Id]);
 
   const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleUpdateForm = () => {
+    navigate("/HakeemProfile/Add_Remedies/Add_ingredient/UpdateIngredients", {
+      state: { Nuskha_Id: Nuskha_Id, ingredientId: ingredientId },
+    });
+  };
 
   const submitIngredient = async () => {
     const formData = new FormData();
@@ -43,9 +50,8 @@ const Add_ingredient = () => {
         }
       );
 
-      // const newIngredientId = responseAddIng.data; // Ensure the ID is correctly accessed
       const ingId = responseAddIng.data;
-      // setIngredientId();
+      setIngredientId(ingId);
       console.log("Ingredient added, ID: ", ingId);
 
       const formData2 = new FormData();
@@ -65,8 +71,8 @@ const Add_ingredient = () => {
       );
 
       console.log("Quantity added: ", responseAddIngredient.data);
-      handleClose(); // Close the modal after successful API call
-      handleAddIngredient(); // Close the modal after successful API call
+      handleClose();
+      handleAddIngredient();
     } catch (error) {
       console.error("Error during API call:", error);
       if (error.response) {
@@ -85,10 +91,6 @@ const Add_ingredient = () => {
     setIngredient("");
     setQuantity("");
     setUnit("");
-  };
-
-  const handleShow = () => {
-    setShow(true);
   };
 
   const handleIngredientChange = (e) => {
@@ -129,7 +131,7 @@ const Add_ingredient = () => {
                   <Modal.Title>Check the information</Modal.Title>
                 </Modal.Header>
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
+                  <Button variant="secondary" onClick={handleUpdateForm}>
                     Update Form
                   </Button>
                   <Button variant="primary" onClick={submitIngredient}>

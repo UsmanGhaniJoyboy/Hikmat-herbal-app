@@ -21,6 +21,7 @@ import Remedy_Disciption from "./Components/pages/Remedy_Disciption";
 import Comment_Reply from "./Components/pages/Comment_Reply";
 import SettingUpPatient from "./Components/pages/SettingUpPatient";
 import { useLocation } from "react-router-dom";
+import UpdateIngredients from "./Components/pages/UpdateIngredients";
 
 function App() {
   // const logout = useLocation();
@@ -88,7 +89,7 @@ function App() {
             <Route path="/SettingUpPatient" element={<SettingUpPatient handleUserRole={isPatient} handleSelectedDisease={handleSelectedDisease}/>} />
             <Route path="/HakeemProfile" element={<HakeemProfile sendName={name} />} />
             
-            
+            <Route path="/HakeemProfile/Add_Remedies/Add_ingredient/UpdateIngredients" element={<UpdateIngredients />} />
             <Route path="/Remedies" element={<Remedies sendName={name}/>} />
             <Route path="/About" element={<About handleUserRole={handleUserRole} />} />
             <Route path="/Cart" element={<Cart />} />
