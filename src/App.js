@@ -28,6 +28,7 @@ function App() {
   const [isPatient, setIsPatient] = useState([]);
   const [name, setName ] = useState([]);
   const [selectedDisease, setSelectedDisease] = useState([]);
+  const [homeDisease,setHomeDisease ]  =useState([]);
   
 
   const handleSelectedDisease = (selectedOptions) => {
@@ -38,10 +39,13 @@ function App() {
   
   const handleUserRole = (role) => {
       setIsPatient(role);
-    console.log(role);
+    console.log("Data of user in app.js",role);
   };
 
-
+  const sendingDiseaseHome = (diseases)=>{
+    setHomeDisease(diseases);
+    console.log("Sending Disease Record to home page")
+  }
 
   const sendName=(name)=>{
     setName(name);
@@ -79,9 +83,9 @@ function App() {
         
           <>
             
-            <Route path="/" element={<Login handleUserRole={handleUserRole} sendName={sendName} />} />
-            <Route path="/Home" element={<Home isPatient={isPatient} selectedDisease={selectedDisease}/>} />
-            <Route path="/SettingUpPatient" element={<SettingUpPatient handleSelectedDisease={handleSelectedDisease}/>} />
+            <Route path="/" element={<Login  handleUserRole={handleUserRole} sendName={sendName} />} />
+            <Route path="/Home" element={<Home handleUserRole={isPatient} isPatient={isPatient} />} />
+            <Route path="/SettingUpPatient" element={<SettingUpPatient handleUserRole={isPatient} handleSelectedDisease={handleSelectedDisease}/>} />
             <Route path="/HakeemProfile" element={<HakeemProfile sendName={name} />} />
             
             

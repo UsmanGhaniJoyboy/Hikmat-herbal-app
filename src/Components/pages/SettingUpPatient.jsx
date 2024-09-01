@@ -7,22 +7,23 @@ import Form from "react-bootstrap/Form";
 import axios from "axios";
 import Select from "react-select";
 
-const SettingUpPatient = ({handleSelectedDisease}) => {
+const SettingUpPatient = ({ handleUserRole }) => {
   const navigate = useNavigate();
   const [diseases, setDiseases] = useState([]);
   const [selectedDisease, setSelectedDisease] = useState([]);
 
   useEffect(() => {
     // Fetch diseases from the backend API
-    axios.get("http://localhost/Hakeemhikmat/api/Addnushka/showAllDisease")
+    axios
+      .get("http://localhost/Hakeemhikmat/api/Addnushka/showAllDisease")
       .then((response) => {
-        // Check if the response contains data
         if (response.data && response.data !== "NO DATA") {
-          console.log("Diseases:", response.data);
-          // setDiseases(response.data);
-          setDiseases(response.data.map(disease => ({ value: disease.id, label: disease.name })));
-          // handleDisease(setDiseases);
-          console.log(diseases);
+          setDiseases(
+            response.data.map((disease) => ({
+              value: disease.id,
+              label: disease.name,
+            }))
+          );
         } else {
           console.log("No diseases found");
         }
@@ -33,12 +34,38 @@ const SettingUpPatient = ({handleSelectedDisease}) => {
   }, []);
 
   const handleHomebtn = () => {
-    console.log("Selected diseases:", selectedDisease); 
-    handleSelectedDisease(selectedDisease);
-    // navigate("/Home", { state: { response_Patient: "PatientHere" }})
-    navigate("/Home");
-  };
+    const userId = handleUserRole.id;
+    const diseaseIds = selectedDisease.map((disease) => disease.value);
 
+    // Validate input
+    if (!userId || diseaseIds.length === 0) {
+      alert("Please select at least one disease");
+      return;
+    }
+
+    // Prepare request payload
+    const payload = JSON.stringify(diseaseIds);
+
+    // Make API request to save diseases
+    axios
+      .post(
+        `http://localhost/Hakeemhikmat/api/Addnushka/SaveDiseases?userId=${userId}`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        alert("Diseases saved successfully");
+        navigate("/Home", { state: { diseaseIds } });
+      })
+      .catch((error) => {
+        console.error("Error saving diseases:", error);
+        alert("Error saving diseases");
+      });
+  };
   return (
     <div>
       <div className="login-container">
@@ -70,12 +97,13 @@ const SettingUpPatient = ({handleSelectedDisease}) => {
           Setting up Profile
         </h3>
         <form>
-        <Select
+          <Select
             options={diseases}
             value={selectedDisease}
-           isMulti
-            onChange={(selectedOptions) =>{setSelectedDisease(selectedOptions)
-            } }
+            isMulti
+            onChange={(selectedOptions) => {
+              setSelectedDisease(selectedOptions);
+            }}
           />
           <Button onClick={handleHomebtn}>Go to Home</Button>
         </form>

@@ -13,50 +13,52 @@ import search from "../images/nounsearch.png";
 import Home_remedyCard from "../inc/Home_remedyCard";
 import Nav2_forPatient from "../inc/Nav2_forPatient";
 import CustomeNav from "../inc/CustomeNav";
+import { useLocation } from "react-router-dom";
 
-function Home({ isPatient, selectedDisease }) {
+function Home({ isPatient,handleUserRole }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [remediesAgainstDisease, setRemediesAgainstDisease] = useState([]);
   const [checkPatient, setCheckPatient] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Extract disease IDs from location state
+  const { diseaseIds } = location.state || {};
+
   useEffect(() => {
-    console.log("Who is coming: ", isPatient.rol);
     handleTheRole();
+    console.log("Disease IDs from previous page", diseaseIds);
+    console.log("Patient data coming from App.js to home page ", handleUserRole);
 
     const fetchNuskhas = async () => {
       try {
-        const ids = selectedDisease.map((item) => item.value);
-        const idsString = ids.join(",");
-        const response = await axios.get(
-          `http://localhost/Hakeemhikmat/api/Addnushka/SearchNushka?diseaseIds=${idsString}`
-        );
-
-        if (response.data && response.data !== "NO DATA") {
-          const sortedData = response.data.sort(
-            (a, b) => b.AverageRating - a.AverageRating
+        if (diseaseIds && diseaseIds.length > 0) {
+          const idsString = diseaseIds.join(",");
+          const response = await axios.get(
+            `http://localhost/Hakeemhikmat/api/Addnushka/SearchNushka?diseaseIds=${idsString}`
           );
-          setRemediesAgainstDisease(sortedData);
-          console.log("Nuskhas Fetched:", sortedData);
+
+          if (response.data && response.data.length > 0) {
+            const sortedData = response.data.sort(
+              (a, b) => b.AverageRating - a.AverageRating
+            );
+            setRemediesAgainstDisease(sortedData);
+            console.log("Nuskhas Fetched:", sortedData);
+          } else {
+            console.log("No Nuskhas found");
+          }
         } else {
-          console.log("No Nuskhas found");
+          console.log("No disease IDs provided");
+          // Handle case where no disease IDs are provided (optional)
         }
       } catch (error) {
         console.error("Error fetching Nuskhas:", error);
-        if (error.response) {
-          console.error("Response data:", error.response.data);
-          console.error("Response status:", error.response.status);
-          console.error("Response headers:", error.response.headers);
-        } else if (error.request) {
-          console.error("Request data:", error.request);
-        } else {
-          console.error("Error message:", error.message);
-        }
       }
     };
 
     fetchNuskhas();
-  }, [selectedDisease]);
+  }, [diseaseIds]);
+  // Other component logic
 
   const handleSeeRemedyClick = (index) => {
     const selectedRemedy = remediesAgainstDisease[index];

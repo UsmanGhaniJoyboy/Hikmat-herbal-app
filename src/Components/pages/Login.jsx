@@ -14,8 +14,6 @@ const Login = ({ handleUserRole, sendName }) => {
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState(eyeOff);
 
-
-
   const gotoSignup = () => {
     navigate("/Signup");
   };
@@ -28,43 +26,67 @@ const Login = ({ handleUserRole, sendName }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Call the login API
     fetch(
-      `http://localhost/Hakeemhikmat/api/Users/Login?email=${Email}&password=${password}`
+      `http://localhost/Hakeemhikmat/api/Users/Login2?email=${Email}&password=${password}`
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Invalid username or password");
+          throw new Error("Invalid email or password");
         }
         return response.json();
       })
       .then((data) => {
-        // Check if the login was successful
-        if (data.email === Email && data.password === password) {
-          // Alert the user and set isLoggedIn statesssss
-          // setIsLoggedIn(true);
+        console.log("Full API Response:", data);
 
-          // const handleScreen = data.rol;
+        const user = data.user;
+
+        if (!user) {
+          alert("User data not found in the API response");
+          return;
+        }
+
+        const responseEmail = user.email?.trim().toLowerCase();
+        const responsePassword = user.password?.trim();
+
+        if (responseEmail === undefined || responsePassword === undefined) {
+          alert("Email or password fields not found in the API response");
+          return;
+        }
+
+        const inputEmail = Email.trim().toLowerCase();
+        const inputPassword = password.trim();
+
+        if (
+          inputEmail === responseEmail &&
+          inputPassword === responsePassword
+        ) {
           alert("Successfully logged in");
-          // Redirect to HakeemProfile page
-          if (data.rol === "Patient") {
-            // navigate("/Home");
-            handleUserRole(data);
-            navigate("/SettingUpPatient");
-          } else {
-            sendName(data);
+
+          if (user.rol === "Patient") {
+            if (data.diseases && data.diseases.length > 0) {
+              handleUserRole(user);
+              navigate("/Home", { state: { diseaseIds: data.diseases.map(disease => disease.id) } });
+            } else {
+              handleUserRole(user);
+              navigate("/SettingUpPatient");
+            }
+          } else if (user.rol === "Hakeem") {
+            sendName(user);
             navigate("/HakeemProfile");
+          } else {
+            alert("Unknown role");
           }
-          console.log(data);
         } else {
-          throw new Error("Invalid Email or password");
+          alert("Invalid email or password in data comparison");
         }
       })
       .catch((error) => {
-        // Display error message
+        console.error("Login error:", error);
         alert(error.message);
       });
   };
+
+
   return (
     <div>
       <div className="login-container">
