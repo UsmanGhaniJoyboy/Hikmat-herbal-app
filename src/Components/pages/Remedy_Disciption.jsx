@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import CustomeNav from "../inc/CustomeNav";
 import Custome_heading from "../inc/Custome_heading";
 import Row from "react-bootstrap/Row";
@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import Rating from "../inc/Rating";
+import Show_Rating from "../inc/Show_Rating";
 import ClickableRating from "../inc/ClickableRating";
 import Nav2_forPatient from "../inc/Nav2_forPatient";
 
@@ -19,23 +19,16 @@ const Remedy_Disciption = () => {
   const { remedy } = location.state;
   const { patientComing } = location.state;
   const [steps, setSteps] = useState([]);
-  const [Ingredient, setIngredient] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
   const [usage, setUsage] = useState([]);
   const [comments, setComments] = useState("");
   const [saveComments, setSaveComments] = useState([]);
   const [userRating, setUserRating] = useState(0);
-  const [averageRating, setAverageRating] = useState(remedy.AverageRating);
-  const [totaluserRating, setTotaluserRating] = useState("");
+  const [averageRating, setAverageRating] = useState(remedy.AverageRating || 0);
+  const [ingredientRatings, setIngredientRatings] = useState([]);
+  const [totalUserRatings, setTotalUserRatings] = useState(0);
 
   useEffect(() => {
-    console.log(remedy);
-    console.log("Nuskha id aginst selecting remedy", remedy.Nuskhaid);
-    console.log("Patient id, where are you?", patientComing.id);
-    console.log("Hakeem id, where are you?", remedy.Hakeemid);
-   
-
-    console.log("user rating", remedy.TotalUserRated);
-
     const fetchData = async () => {
       try {
         const responseSteps = await axios.get(
@@ -53,22 +46,13 @@ const Remedy_Disciption = () => {
           responseUsages.data
         ) {
           setSteps(responseSteps.data);
-          setIngredient(responseIngredient.data);
+          setIngredients(responseIngredient.data);
           setUsage(responseUsages.data);
         } else {
           console.error("One or more responses did not return data.");
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        if (error.response) {
-          console.error("Response data:", error.response.data);
-          console.error("Response status:", error.response.status);
-          console.error("Response headers:", error.response.headers);
-        } else if (error.request) {
-          console.error("Request data:", error.request);
-        } else {
-          console.error("Error message:", error.message);
-        }
       }
     };
 
@@ -80,41 +64,35 @@ const Remedy_Disciption = () => {
         if (responseComments.data) {
           setSaveComments(responseComments.data);
         } else {
-          console.error("One or more responses did not return data.");
+          console.error("Comments did not return data.");
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
-        if (error.response) {
-          console.error("Response data:", error.response.data);
-          console.error("Response status:", error.response.status);
-          console.error("Response headers:", error.response.headers);
-        } else if (error.request) {
-          console.error("Request data:", error.request);
+        console.error("Error fetching comments:", error);
+      }
+    };
+
+    const fetchIngredientRatings = async () => {
+      try {
+        const responseRatings = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetNuskhaIngredientRatings?nuskhaId=${remedy.Nuskhaid}`
+        );
+        if (responseRatings.data) {
+          const ingredientRatings = responseRatings.data.IngredientRatings || [];
+          const totalUserRatings = responseRatings.data.TotalUserRatings || 0;
+          setIngredientRatings(ingredientRatings);
+          setTotalUserRatings(totalUserRatings);
         } else {
-          console.error("Error message:", error.message);
+          console.error("Ingredient ratings did not return data.");
         }
+      } catch (error) {
+        console.error("Error fetching ingredient ratings:", error);
       }
     };
 
     fetchData();
     fetchComments();
-  }, [remedy.Nuskhaid, remedy.Hakeemid,remedy.TotalUserRated]);
-
-  useEffect(() => {
-    console.log("Fetched steps: ", steps);
-  }, [steps]);
-
-  useEffect(() => {
-    console.log("Fetched ingredients: ", Ingredient);
-  }, [Ingredient]);
-
-  useEffect(() => {
-    console.log("Fetched usages: ", usage);
-  }, [usage]);
-
-  useEffect(() => {
-    console.log("Fetched comments: ", saveComments);
-  }, [saveComments]);
+    fetchIngredientRatings();
+  }, [remedy.Nuskhaid]);
 
   const handleRating = (rate) => {
     setUserRating(rate);
@@ -181,13 +159,30 @@ const Remedy_Disciption = () => {
             <Col md={2}>
               <h3>Ingredient</h3>
               <ul>
-                {Ingredient.map((item, index) => (
-                  <li key={index}>
-                    {item.IngredientName} <span>{item.ingredientquantity}</span>
-                    <span>({item.ingredientunit})</span>
-                  </li>
-                ))}
+                {ingredients.map((item, index) => {
+                  // Find the rating for the current ingredient
+                  const rating = ingredientRatings.find(r => r.IngredientId === item.IngredientId);
+                  const averageRating = rating ? (rating.AverageRating || 0) : 0;
+                  const isLowRated = averageRating < 3;
+
+                  return (
+                    <li
+                      key={index}
+                      style={{
+                        color: isLowRated ? 'red' : 'inherit',
+                        fontWeight: isLowRated ? 'bold' : 'normal'
+                      }}
+                    >
+                      {item.IngredientName} <span>{item.ingredientquantity}</span>
+                      <span>({item.ingredientunit})</span>
+                      <Show_Rating rating={averageRating} />
+                    </li>
+                  );
+                })}
               </ul>
+              <div style={{ marginTop: '20px' }}>
+                <strong>Total Users Rated: {totalUserRatings}</strong>
+              </div>
             </Col>
           </Row>
           <Row className="justify-content-md-center rating-product">
@@ -201,12 +196,7 @@ const Remedy_Disciption = () => {
                 }}
               >
                 Average Rating:{" "}
-                <Rating
-                  rating={averageRating}
-                  clickable={false}
-                  showNumber={true}
-                  // userRating ={remedy.TotalUserRated}
-                />
+                <Show_Rating rating={averageRating} />
               </span>
             </Col>
             <Col md={2}>
@@ -245,13 +235,17 @@ const Remedy_Disciption = () => {
               </div>
               <div className="comments-section">
                 <h3>Comments</h3>
-                <ol>
-                  {[...saveComments].reverse().map((comment, index) => (
-                    <li style={{ fontSize: "1.2rem" }} key={index}>
-                      <p>{comment.Comment}</p>
-                    </li>
-                  ))}
-                </ol>
+                {saveComments.length > 0 ? (
+                  <ol>
+                    {[...saveComments].reverse().map((comment, index) => (
+                      <li style={{ fontSize: "1.2rem" }} key={index}>
+                        <p>{comment.Comment}</p>
+                      </li>
+                    ))}
+                  </ol>
+                ) : (
+                  <p>No comments yet. Be the first to comment!</p>
+                )}
               </div>
             </Col>
             <Col md={2}></Col>

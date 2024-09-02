@@ -1,35 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import CustomeNav from "../inc/CustomeNav";
 import Custome_heading from "../inc/Custome_heading";
 import "../StyleSheets/Add_ingredient.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 
 const Add_ingredient = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { Nuskha_Id } = location.state || {};
+
   const [ingredientId, setIngredientId] = useState("");
   const [ingredient, setIngredient] = useState("");
   const [quantity, setQuantity] = useState("");
   const [unit, setUnit] = useState("");
   const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    console.log("Remedy ID is: ", Nuskha_Id);
-  }, [Nuskha_Id]);
+  const [ingredientAdded, setIngredientAdded] = useState(false); // Track if ingredient was added
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleUpdateForm = () => {
-    navigate("/HakeemProfile/Add_Remedies/Add_ingredient/UpdateIngredients", {
-      state: { Nuskha_Id: Nuskha_Id, ingredientId: ingredientId },
-    });
+    if (ingredientId) {
+      navigate("/HakeemProfile/Add_Remedies/Add_ingredient/UpdateIngredients", {
+        state: { Nuskha_Id, ingredientId }
+      });
+    } else {
+      console.error("Ingredient ID is not set");
+    }
   };
 
   const submitIngredient = async () => {
@@ -37,53 +37,39 @@ const Add_ingredient = () => {
     formData.append("name", ingredient);
     formData.append("publicity", "public");
 
-    console.log("Ingredient's Name:", ingredient);
-
     try {
       const responseAddIng = await axios.post(
         "http://localhost/Hakeemhikmat/api/Addnushka/AddIngrdeients",
         formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       const ingId = responseAddIng.data;
-      setIngredientId(ingId);
-      console.log("Ingredient added, ID: ", ingId);
+      console.log("Ingredient ID from API:", ingId); // Debug log
 
-      const formData2 = new FormData();
-      formData2.append("quantity", quantity);
-      formData2.append("unit", unit);
-      formData2.append("r_id", Nuskha_Id);
-      formData2.append("i_id", ingId);
+      if (ingId) {
+        setIngredientId(ingId);
+        setIngredientAdded(true); // Mark ingredient as added
 
-      const responseAddIngredient = await axios.post(
-        "http://localhost/Hakeemhikmat/api/Addnushka/AddIngrdeintsquantity",
-        formData2,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+        const formData2 = new FormData();
+        formData2.append("quantity", quantity);
+        formData2.append("unit", unit);
+        formData2.append("r_id", Nuskha_Id);
+        formData2.append("i_id", ingId);
 
-      console.log("Quantity added: ", responseAddIngredient.data);
-      handleClose();
-      handleAddIngredient();
+        await axios.post(
+          "http://localhost/Hakeemhikmat/api/Addnushka/AddIngrdeintsquantity",
+          formData2,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+
+        // Instead of closing the modal, navigate to UpdateIngredients
+        handleUpdateForm();
+      } else {
+        console.error("Failed to get Ingredient ID from API");
+      }
     } catch (error) {
       console.error("Error during API call:", error);
-      if (error.response) {
-        console.error("Response data:", error.response.data);
-        console.error("Response status:", error.response.status);
-        console.error("Response headers:", error.response.headers);
-      } else if (error.request) {
-        console.error("Request data:", error.request);
-      } else {
-        console.error("Error message:", error.message);
-      }
     }
   };
 
@@ -107,7 +93,7 @@ const Add_ingredient = () => {
 
   const Move_next = () => {
     navigate("/HakeemProfile/Add_Remedies/Add_ingredient/Steps", {
-      state: { RemedyId: Nuskha_Id },
+      state: { RemedyId: Nuskha_Id }
     });
   };
 
@@ -132,7 +118,7 @@ const Add_ingredient = () => {
                 </Modal.Header>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleUpdateForm}>
-                    Update Form
+                    Update 
                   </Button>
                   <Button variant="primary" onClick={submitIngredient}>
                     Add Ingredient
