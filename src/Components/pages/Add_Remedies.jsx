@@ -14,6 +14,8 @@ function Add_Remedies() {
   const { HakeemId } = location.state;
   const [hakeemdata, setHakeemdata] = useState("");
   const [diseases, setDiseases] = useState([]);
+  const [perhaiz, setperhaiz] = useState([]);
+  const [selectedPerhaiz, setSelectedPerhaiz] = useState([]);
   //This state is for seting the selected disease
   const [selectedDisease, setSelectedDisease] = useState([]);
   //for nuskha id
@@ -24,42 +26,68 @@ function Add_Remedies() {
   //for publicand private
   const [Remedy_privacy, setRemedy_privacy] = useState("");
 
-  useEffect(() => {
-    // setHakeemdata(HakeemId);
-    console.log("Hakeem data is coming on Add remedy Page ", HakeemId);
-    console.log("Hakeem's id is coming on Add Remedy page ", HakeemId.id);
+  useEffect(
+    () => {
+      // setHakeemdata(HakeemId);
+      console.log("Hakeem data is coming on Add remedy Page ", HakeemId);
+      console.log("Hakeem's id is coming on Add Remedy page ", HakeemId.id);
 
-    const addRemedy = async () => {
-      try {
-        const responseDiseases = await axios
-          .get("http://localhost/Hakeemhikmat/api/Addnushka/showAllDisease")
-          .then((responseDiseases) => {
-            // Check if the response contains data
-            if (responseDiseases.data && responseDiseases.data !== "NO DATA") {
-              console.log("Diseases:", responseDiseases.data);
-              // setDiseases(response.data);
-              setDiseases(
-                responseDiseases.data.map((disease) => ({
-                  id: disease.id,
-                  label: disease.name,
-                }))
-              );
-              // handleDisease(setDiseases);
-              console.log(diseases);
-            } else {
-              console.log("No diseases found");
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching diseases:", error);
-          });
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      const addRemedy = async () => {
+        try {
+          const responseDiseases = await axios
+            .get("http://localhost/Hakeemhikmat/api/Addnushka/showAllDisease")
+            .then((responseDiseases) => {
+              // Check if the response contains data
+              if (
+                responseDiseases.data &&
+                responseDiseases.data !== "NO DATA"
+              ) {
+                console.log("Diseases:", responseDiseases.data);
+                // setDiseases(response.data);
+                setDiseases(
+                  responseDiseases.data.map((disease) => ({
+                    id: disease.id,
+                    label: disease.name,
+                  }))
+                );
+                // handleDisease(setDiseases);
+                console.log(diseases);
+              } else {
+                console.log("No diseases found");
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching diseases:", error);
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      // --------------------------------------
+      axios
+        .get("http://localhost/Hakeemhikmat/api/Addnushka/showPerhiaz")
+        .then((response) => {
+          if (response.data && response.data !== "NO DATA") {
+            console.log("Response Perhaiz ", response.data);
+            setperhaiz(
+              response.data.map((per) => ({
+                id: per.Id,
+                label: per.Perhaiz1,
+              }))
+            );
+          } else {
+            console.log("No data found");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching perhaiz:", error);
+        });
 
-    addRemedy();
-  }, [HakeemId.id]);
+      addRemedy();
+    },
+    [HakeemId.id],
+    []
+  );
 
   // const handleDiseaseChange = (selectedOptions) => {
   //   setSelectedDiseases(selectedOptions.map((option) => option.value));
@@ -72,6 +100,8 @@ function Add_Remedies() {
   };
 
   const handleSubmit = async (e) => {
+    
+
     e.preventDefault();
     const formData = new FormData();
     formData.append("h_id", HakeemId.id);
@@ -99,6 +129,8 @@ function Add_Remedies() {
       formData2.append("n_id", nuskhaid);
       formData2.append("d_id", selectedDisease.id);
 
+      console.log("which about selected Disease ",selectedDisease.id)
+
       // Second API call to add the nuskha data against the disease
       const responseDisaseNuskha = await axios.post(
         "http://localhost/Hakeemhikmat/api/Addnushka/AddNushkaData",
@@ -117,10 +149,36 @@ function Add_Remedies() {
       console.error("Error submitting data:", error);
       // Handle error (e.g., show error message)a
     }
+    // ----------------------
+    const formData3 = new FormData();
+    formData3.append("n_id", nuskhaid);
+    formData3.append("p_id", selectedPerhaiz.id);
+    console.log("selected perhaiz id ",selectedPerhaiz.id)
+    console.log("with Nuskha id ",nuskhaid)
+    try {
+      // Second API call to add the nuskha data against the disease
+      const responsePerhaizNuskha = await axios.post(
+        "http://localhost/Hakeemhikmat/api/Addnushka/AddPerhaizData",
+        formData3,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("parhaiz data added successfully:", responsePerhaizNuskha.data);
+      alert("Save perhaiz data and Remedy successfully");
+
+      // Handle success (e.g., navigate to next step, show success message)
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      // Handle error (e.g., show error message)a
+    }
+
     // navigate("/HakeemProfile/Add_Remedies/Add_ingredient",{state:{Nuskha_Id:nuskhaid}});
     navigate("/HakeemProfile/Add_Remedies/Add_ingredient", {
       state: { Nuskha_Id: nuskhaid },
-      
     });
   };
 
@@ -141,9 +199,8 @@ function Add_Remedies() {
         }
       );
       console.log("Disease Added:", response.data.name);
-
-      // Handle success (e.g., navigate to next step, show success message)
     } catch (error) {
+      // Handle success (e.g., navigate to next step, show success message)
       console.error("Error submitting data:", error);
       // Handle error (e.g., show error message)a
     }
@@ -197,6 +254,20 @@ function Add_Remedies() {
               required
             />
           </div>
+          {/* ------------- show perhaiz */}
+          <form>
+            <Select
+              options={perhaiz}
+              value={selectedPerhaiz}
+              // isMulti
+              onChange={(selectedOption) => {
+                setSelectedPerhaiz(selectedOption);
+                console.log("selected perhaiz ", selectedOption);
+                // selectedPerhaiz(setSelectedPerhaiz.id)
+              }}
+            />
+          </form>
+
           {/* Radion button */}
           <div className="form-group">
             <label>Remedy Should be:</label>

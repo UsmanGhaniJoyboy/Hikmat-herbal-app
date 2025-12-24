@@ -10,6 +10,7 @@ const Home_remedyCard = ({
   rating,
   onClick,
   diseaseName,
+  perhaiz,
 }) => {
   return (
     <Card className="mb-3 home_card">
@@ -30,6 +31,12 @@ const Home_remedyCard = ({
           Prescribed by:{" "}
           <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
             {hakeemName}
+          </span>
+        </Card.Title>
+        <Card.Title className="hakeem-name">
+          perhaiz:{" "}
+          <span style={{ fontWeight: "normal", fontSize: "1rem" }}>
+            {perhaiz}
           </span>
         </Card.Title>
         <Rating rating={rating} />

@@ -37,6 +37,8 @@ const SettingUpPatient = ({ handleUserRole }) => {
     const userId = handleUserRole.id;
     const diseaseIds = selectedDisease.map((disease) => disease.value);
 
+
+
     // Validate input
     if (!userId || diseaseIds.length === 0) {
       alert("Please select at least one disease");

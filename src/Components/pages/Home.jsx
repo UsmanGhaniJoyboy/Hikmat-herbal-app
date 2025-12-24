@@ -80,7 +80,7 @@ function Home({ isPatient,handleUserRole }) {
   };
 
   const filteredRemedies = remediesAgainstDisease.filter((remedy) =>
-    remedy.NuskhaName.toLowerCase().includes(searchQuery.toLowerCase())
+    remedy.NuskhaName.toLowerCase()(searchQuery.toLowerCase())
   );
 
   return (
@@ -129,6 +129,7 @@ function Home({ isPatient,handleUserRole }) {
                 <Home_remedyCard
                   remedyName={remedy.NuskhaName}
                   hakeemName={remedy.HakeemName}
+                  perhaiz = {remedy.perhaizid}
                   rating={remedy.AverageRating}
                   diseaseName={remedy.DiseaseName}
                   onClick={() => handleSeeRemedyClick(index)}

@@ -12,6 +12,7 @@ import axios from "axios";
 import Show_Rating from "../inc/Show_Rating";
 import ClickableRating from "../inc/ClickableRating";
 import Nav2_forPatient from "../inc/Nav2_forPatient";
+import GiveIngredientRating from "../inc/GiveIngredientRating";
 
 const Remedy_Disciption = () => {
   const navigate = useNavigate();
@@ -31,23 +32,31 @@ const Remedy_Disciption = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch steps, usage, comments, and ingredients
         const responseSteps = await axios.get(
           `http://localhost/Hakeemhikmat/api/Addnushka/GetSteps?Nuskaid=${remedy.Nuskhaid}`
-        );
-        const responseIngredient = await axios.get(
-          `http://localhost/Hakeemhikmat/api/Addnushka/GetIngredients?Nuskaid=${remedy.Nuskhaid}`
         );
         const responseUsages = await axios.get(
           `http://localhost/Hakeemhikmat/api/Addnushka/Getusage?Nuskaid=${remedy.Nuskhaid}`
         );
+        const responseComments = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetCommentOfNuskha?nid=${remedy.Nuskhaid}`
+        );
+        const responseIngredients = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/getIngredietnts?NuskhaId=${remedy.Nuskhaid}`
+        );
+
+        // Check if the data is present and correctly structured
         if (
           responseSteps.data &&
-          responseIngredient.data &&
-          responseUsages.data
+          responseUsages.data &&
+          responseComments.data &&
+          responseIngredients.data
         ) {
           setSteps(responseSteps.data);
-          setIngredients(responseIngredient.data);
           setUsage(responseUsages.data);
+          setSaveComments(responseComments.data);
+          setIngredients(responseIngredients.data);
         } else {
           console.error("One or more responses did not return data.");
         }
@@ -56,33 +65,16 @@ const Remedy_Disciption = () => {
       }
     };
 
-    const fetchComments = async () => {
+    // Ingredient Rating
+    const fetchIngredientRating = async () => {
       try {
-        const responseComments = await axios.get(
-          `http://localhost/Hakeemhikmat/api/Addnushka/GetCommentOfNuskha?nid=${remedy.Nuskhaid}`
+        const IngRatingResponse = await axios.get(
+          `http://localhost/Hakeemhikmat/api/Addnushka/GetAverageRatings?nuskha_id=${remedy.Nuskhaid}`
         );
-        if (responseComments.data) {
-          setSaveComments(responseComments.data);
+        if (IngRatingResponse.data) {
+          setIngredientRatings(IngRatingResponse.data); // Set the fetched data
         } else {
-          console.error("Comments did not return data.");
-        }
-      } catch (error) {
-        console.error("Error fetching comments:", error);
-      }
-    };
-
-    const fetchIngredientRatings = async () => {
-      try {
-        const responseRatings = await axios.get(
-          `http://localhost/Hakeemhikmat/api/Addnushka/GetNuskhaIngredientRatings?nuskhaId=${remedy.Nuskhaid}`
-        );
-        if (responseRatings.data) {
-          const ingredientRatings = responseRatings.data.IngredientRatings || [];
-          const totalUserRatings = responseRatings.data.TotalUserRatings || 0;
-          setIngredientRatings(ingredientRatings);
-          setTotalUserRatings(totalUserRatings);
-        } else {
-          console.error("Ingredient ratings did not return data.");
+          console.error("No data returned for ingredient ratings.");
         }
       } catch (error) {
         console.error("Error fetching ingredient ratings:", error);
@@ -90,9 +82,15 @@ const Remedy_Disciption = () => {
     };
 
     fetchData();
-    fetchComments();
-    fetchIngredientRatings();
+    fetchIngredientRating();
   }, [remedy.Nuskhaid]);
+
+  // Log ingredient ratings after state update
+  useEffect(() => {
+    if (ingredientRatings.length > 0) {
+      console.log("Ingredient Ratings: ", ingredientRatings);
+    }
+  }, [ingredientRatings]);
 
   const handleRating = (rate) => {
     setUserRating(rate);
@@ -157,32 +155,62 @@ const Remedy_Disciption = () => {
               </ol>
             </Col>
             <Col md={2}>
-              <h3>Ingredient</h3>
+              <h3>Ingredients</h3>
               <ul>
-                {ingredients.map((item, index) => {
-                  // Find the rating for the current ingredient
-                  const rating = ingredientRatings.find(r => r.IngredientId === item.IngredientId);
-                  const averageRating = rating ? (rating.AverageRating || 0) : 0;
-                  const isLowRated = averageRating < 3;
+                {Array.isArray(ingredients) && ingredients.length > 0 ? (
+                  ingredients.map((item, index) => {
+                    const ingredientRating = ingredientRatings.find(
+                      (rating) => rating.IngredientId === item.ingredient_id
+                    ); // Find the rating for the current ingredient
 
-                  return (
-                    <li
-                      key={index}
-                      style={{
-                        color: isLowRated ? 'red' : 'inherit',
-                        fontWeight: isLowRated ? 'bold' : 'normal'
-                      }}
-                    >
-                      {item.IngredientName} <span>{item.ingredientquantity}</span>
-                      <span>({item.ingredientunit})</span>
-                      <Show_Rating rating={averageRating} />
-                    </li>
-                  );
-                })}
+                    const isLowRating =
+                      ingredientRating && ingredientRating.AverageRating < 3;
+
+                    return (
+                      <li key={item.ingredient_id}>
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            color: isLowRating ? "red" : "black", // Highlight ingredient name in red if rating < 3
+                          }}
+                        >
+                          {item.ingName}
+                        </span>
+                        <br />
+                        <span>{item.quanity}</span>
+                        <span>({item.unit})</span>
+                        <br />
+                        {ingredientRating ? (
+                          <div>
+                            <span
+                              style={{
+                                fontWeight: "bold",
+                                color: isLowRating ? "red" : "black", // Highlight rating in red if rating < 3
+                              }}
+                            >
+                              ({ingredientRating.AverageRating}) : Rating
+                            </span>
+                          </div>
+                        ) : (
+                          <span>No rating yet.</span>
+                        )}
+                        {/* GiveIngredientRating component placed here */}
+                        <GiveIngredientRating
+                          userId={patientComing.id}
+                          nuskhaId={remedy.Nuskhaid}
+                          ingredientId={item.ingredient_id}
+                        />
+                      </li>
+                    );
+                  })
+                ) : (
+                  <li>No ingredients available.</li>
+                )}
               </ul>
-              <div style={{ marginTop: '20px' }}>
+
+              {/* <div style={{ marginTop: "20px" }}>
                 <strong>Total Users Rated: {totalUserRatings}</strong>
-              </div>
+              </div> */}
             </Col>
           </Row>
           <Row className="justify-content-md-center rating-product">
@@ -195,8 +223,7 @@ const Remedy_Disciption = () => {
                   fontWeight: "bold",
                 }}
               >
-                Average Rating:{" "}
-                <Show_Rating rating={averageRating} />
+                Average Rating: <Show_Rating rating={averageRating} />
               </span>
             </Col>
             <Col md={2}>
